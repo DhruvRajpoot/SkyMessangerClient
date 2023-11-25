@@ -1,17 +1,33 @@
 import React, { useContext } from "react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import AuthContext from "../Context/AuthContext";
-import { jwtDecode } from "jwt-decode";
+import MyContext from "../Context/MyContext";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { SERVER_URL } from "../Config/Baseurl";
 
 export const Register = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { loggedInUser, setLoggedInUser } = useContext(MyContext);
+  const navigate = useNavigate();
 
-  const handleGoogleSuccess = (res) => {
-    const decode = jwtDecode(res.credential);
-    console.log("success", decode);
-    setUser(decode);
+  const handleGoogleSuccess = async (res) => {
+    try {
+      const response = await axios.post(`${SERVER_URL}/auth/google/signup`, {
+        googleToken: res.credential,
+      });
+
+      if (response.status === 201) {
+        setLoggedInUser(response.data.user);
+        localStorage.setItem("accessToken", response.data.token.accessToken);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        navigate("/messanger");
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 409) {
+        navigate("/login");
+      }
+    }
   };
-  console.log(user)
 
   const handleGoogleError = (err) => {
     console.log("error", err);
@@ -28,6 +44,13 @@ export const Register = () => {
           shape={"circle"}
         />
       </GoogleOAuthProvider>
+      <Link to={"/messanger"}>
+        <button> Go to Messanger</button>
+      </Link>
+      <br />
+      <Link to={"/login"}>
+        <button> Go to Login</button>
+      </Link>
     </>
   );
 };
