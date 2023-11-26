@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import MyContext from "../../Context/MyContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
+import { Footer } from "./Footer";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -48,6 +49,7 @@ export const ChatWindow = () => {
         conversationId: conversationId || tempConversationId,
         message,
       });
+      fetchMessages(conversationId || tempConversationId);
       setMessage("");
     } catch (error) {
       console.log(`Error while sending message: ${error}`);
@@ -71,6 +73,7 @@ export const ChatWindow = () => {
   };
 
   useEffect(() => {
+    setAllMessages([]);
     fetchConversationAndMessages();
   }, [activeConversationUser]);
 
@@ -78,22 +81,19 @@ export const ChatWindow = () => {
     <div className="bg-gray-300">
       <h1>{activeConversationUser.email}</h1>
       <h1>{activeConversationUser.fullname}</h1>
-      <form onSubmit={handleMessageSend}>
-        <input
-          type="text"
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-          value={message}
-        />
-        <button type="submit">Send</button>
-      </form>
+
       <h1>Messages</h1>
       <div className="bg-blue-50">
         {allMessages.map((message) => (
           <Message key={message._id} message={message} />
         ))}
       </div>
+
+      <Footer
+        message={message}
+        setMessage={setMessage}
+        handleMessageSend={handleMessageSend}
+      />
     </div>
   );
 };
