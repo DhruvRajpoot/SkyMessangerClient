@@ -37,14 +37,13 @@ const MyContextProvider = ({ children }) => {
     return () => newSocket.disconnect();
   }, [loggedInUser]);
 
-  // Add New User to Socket
+  // Online Users List
   useEffect(() => {
     if (socket && loggedInUser) {
       socket.emit("addNewUser", loggedInUser._id);
 
       socket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
-        console.log(users);
       });
 
       return () => {

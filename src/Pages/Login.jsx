@@ -8,6 +8,7 @@ import { SERVER_URL } from "../Config/Baseurl";
 export const Login = () => {
   const { loggedInUser, setLoggedInUser } = useContext(MyContext);
   const navigate = useNavigate();
+  
   const handleGoogleSuccess = async (res) => {
     try {
       const response = await axios.post(`${SERVER_URL}/auth/google/login`, {
