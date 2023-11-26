@@ -30,12 +30,6 @@ const MyContextProvider = ({ children }) => {
 
   // Socket Connection
   const [socket, setSocket] = useState(null);
-  useEffect(() => {
-    if (!loggedInUser) return;
-    const newSocket = io(SERVER_URL);
-    setSocket(newSocket);
-    return () => newSocket.disconnect();
-  }, [loggedInUser]);
 
   // Online Users List
   useEffect(() => {
@@ -60,6 +54,7 @@ const MyContextProvider = ({ children }) => {
         activeConversationUser,
         setActiveConversationUser,
         socket,
+        setSocket,
         onlineUsers,
       }}
     >

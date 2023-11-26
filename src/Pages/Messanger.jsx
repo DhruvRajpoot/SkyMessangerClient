@@ -4,12 +4,27 @@ import { Navigate } from "react-router-dom";
 import useAxios from "../Utils/useAxios";
 import { Conversation } from "../Components/Messanger/Conversation";
 import { ChatWindow } from "../Components/Messanger/ChatWindow";
+import { io } from "socket.io-client";
+import { SERVER_URL } from "../Config/Baseurl";
 
 export const Messanger = () => {
   const api = useAxios();
-  const { loggedInUser, activeConversationUser, setActiveConversationUser } =
-    useContext(MyContext);
+  const {
+    loggedInUser,
+    activeConversationUser,
+    setActiveConversationUser,
+    socket,
+    setSocket,
+  } = useContext(MyContext);
   const [users, setUsers] = useState([]);
+
+  // Make user online
+  useEffect(() => {
+    if (!loggedInUser) return;
+    const newSocket = io(SERVER_URL);
+    setSocket(newSocket);
+    return () => newSocket.disconnect();
+  }, [loggedInUser]);
 
   useEffect(() => {
     const getUsers = async () => {
