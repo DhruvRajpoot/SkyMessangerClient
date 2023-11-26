@@ -6,7 +6,8 @@ import { Footer } from "./Footer";
 
 export const ChatWindow = () => {
   const api = useAxios();
-  const { activeConversationUser } = useContext(MyContext);
+  const { activeConversationUser, socket, loggedInUser } =
+    useContext(MyContext);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
@@ -45,12 +46,16 @@ export const ChatWindow = () => {
       if (conversationId === null) {
         tempConversationId = await setUpConversation();
       }
-      await api.post("/messages/create", {
+      const { data } = await api.post("/messages/create", {
         conversationId: conversationId || tempConversationId,
         message,
       });
       fetchMessages(conversationId || tempConversationId);
       setMessage("");
+      socket.emit("sendMessage", {
+        receiverId: activeConversationUser._id,
+        message: data,
+      });
     } catch (error) {
       console.log(`Error while sending message: ${error}`);
     }
@@ -77,6 +82,20 @@ export const ChatWindow = () => {
     fetchConversationAndMessages();
   }, [activeConversationUser]);
 
+  // Receive Message from Socket
+  useEffect(() => {
+    if (socket) {
+      socket.on("getMessage", ({ message, receiverId }) => {
+        loggedInUser._id === receiverId &&
+          setAllMessages((prev) => [...prev, message]);
+      });
+
+      return () => {
+        socket.off("getMessage");
+      };
+    }
+  }, [socket, loggedInUser]);
+
   return (
     <div className="bg-gray-300">
       <h1>{activeConversationUser.email}</h1>
@@ -85,7 +104,9 @@ export const ChatWindow = () => {
       <h1>Messages</h1>
       <div className="bg-blue-50">
         {allMessages.map((message) => (
-          <Message key={message._id} message={message} />
+          <div key={message._id}>
+            <Message message={message} />
+          </div>
         ))}
       </div>
 

@@ -1,4 +1,6 @@
 import { createContext, useEffect, useState } from "react";
+import { SERVER_URL } from "../Config/Baseurl";
+import { io } from "socket.io-client";
 
 const MyContext = createContext();
 
@@ -23,6 +25,34 @@ const MyContextProvider = ({ children }) => {
   // Active Conversation User
   const [activeConversationUser, setActiveConversationUser] = useState(null);
 
+  // Online Users
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  // Socket Connection
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    if (!loggedInUser) return;
+    const newSocket = io(SERVER_URL);
+    setSocket(newSocket);
+    return () => newSocket.disconnect();
+  }, [loggedInUser]);
+
+  // Add New User to Socket
+  useEffect(() => {
+    if (socket && loggedInUser) {
+      socket.emit("addNewUser", loggedInUser._id);
+
+      socket.on("getOnlineUsers", (users) => {
+        setOnlineUsers(users);
+        console.log(users);
+      });
+
+      return () => {
+        socket.off("getOnlineUsers");
+      };
+    }
+  }, [socket, loggedInUser]);
+
   return (
     <MyContext.Provider
       value={{
@@ -30,6 +60,8 @@ const MyContextProvider = ({ children }) => {
         setLoggedInUser,
         activeConversationUser,
         setActiveConversationUser,
+        socket,
+        onlineUsers,
       }}
     >
       {children}
