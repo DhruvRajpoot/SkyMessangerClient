@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import MyContext from "../../Context/MyContext";
+import UserContext from "../../Context/UserContext";
 import { formateDate, formateTime } from "../../Utils/common";
 
 export const Message = ({ message }) => {
-  const { activeConversationUser } = useContext(MyContext);
+  const { activeConversationUser } = useContext(UserContext);
   const [msgByMe, setMsgByMe] = useState(
     message.senderId !== activeConversationUser._id ? true : false
   );

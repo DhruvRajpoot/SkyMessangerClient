@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import MyContext from "../../Context/MyContext";
+import UserContext from "../../Context/UserContext";
 
 export const Conversation = ({ user }) => {
-  const { onlineUsers } = useContext(MyContext);
+  const { onlineUsers } = useContext(UserContext);
   const isOnline = onlineUsers.find((u) => u._id === user._id);
 
   return (

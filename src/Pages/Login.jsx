@@ -1,14 +1,62 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import UserContext from "../Context/UserContext";
 import MyContext from "../Context/MyContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../Config/Baseurl";
+import {
+  Form,
+  LoginContainer,
+  PasswordVisibility,
+} from "../Styles/Pages/Login";
+import { InputGroup, PrimaryButton } from "../Styles/Common";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export const Login = () => {
-  const { loggedInUser, setLoggedInUser } = useContext(MyContext);
   const navigate = useNavigate();
-  
+  const { setLoggedInUser } = useContext(UserContext);
+  const { showToastMessage } = useContext(MyContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${SERVER_URL}/auth/login`, {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        setLoggedInUser(response.data.user);
+        localStorage.setItem("accessToken", response.data.token.accessToken);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        document.cookie = `refreshToken=${
+          response.data.token.refreshToken
+        };expires=${new Date().getTime() + 7 * 24 * 60 * 60 * 1000}`;
+        showToastMessage("Success", "Login Successfully");
+        navigate("/messanger");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.code === "ERR_NETWORK") {
+        showToastMessage(
+          "Error",
+          "Network Error, Please check your internet connection"
+        );
+      } else if (err.response.data.error === "User not exists") {
+        showToastMessage("Error", "User does not exists");
+      } else if (err.response.data.error === "Invalid Credentials") {
+        showToastMessage("Error", "Invalid Credentials");
+      } else {
+        showToastMessage("Error", "Something went wrong");
+      }
+    }
+  };
+
   const handleGoogleSuccess = async (res) => {
     try {
       const response = await axios.post(`${SERVER_URL}/auth/google/login`, {
@@ -23,11 +71,21 @@ export const Login = () => {
           response.data.token.refreshToken
         };expires=${new Date().getTime() + 7 * 24 * 60 * 60 * 1000}`;
         navigate("/messanger");
+        showToastMessage("Success", "Login Successfully");
       }
     } catch (err) {
       console.log(err);
-      if (err.response.data.error === "User not exists") {
-        navigate("/register");
+      if (err.code === "ERR_NETWORK") {
+        showToastMessage(
+          "Error",
+          "Network Error, Please check your internet connection"
+        );
+      } else if (err.response.data.error === "User not exists") {
+        showToastMessage("Error", "User does not exists");
+      } else if (err.response.data.error === "Invalid Credentials") {
+        showToastMessage("Error", "Invalid Credentials");
+      } else {
+        showToastMessage("Error", "Something went wrong");
       }
     }
   };
@@ -37,8 +95,39 @@ export const Login = () => {
   };
 
   return (
-    <>
-      <div>Login</div>
+    <LoginContainer>
+      <Form onSubmit={handleLoginSubmit}>
+        <InputGroup>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor="password">Password</label>
+          <input
+            type={isPasswordVisible ? "text" : "password"}
+            name="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+          <PasswordVisibility
+            onClick={() => setIsPasswordVisible((prev) => !prev)}
+            title={isPasswordVisible ? "Hide Password" : "Show Password"}
+          >
+            {isPasswordVisible ? <FiEye /> : <FiEyeOff />}
+          </PasswordVisibility>
+        </InputGroup>
+        <PrimaryButton type="submit">Login</PrimaryButton>
+      </Form>
+
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
@@ -47,13 +136,14 @@ export const Login = () => {
           shape={"circle"}
         />
       </GoogleOAuthProvider>
+
       <Link to={"/messanger"}>
         <button> Go to Messanger</button>
       </Link>
-      <br />
+
       <Link to={"/register"}>
         <button> Go to Register</button>
       </Link>
-    </>
+    </LoginContainer>
   );
 };

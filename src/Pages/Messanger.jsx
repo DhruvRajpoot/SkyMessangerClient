@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import MyContext from "../Context/MyContext";
+import UserContext from "../Context/UserContext";
 import { Navigate } from "react-router-dom";
 import useAxios from "../Utils/useAxios";
 import { Conversation } from "../Components/Messanger/Conversation";
@@ -15,7 +15,7 @@ export const Messanger = () => {
     setActiveConversationUser,
     socket,
     setSocket,
-  } = useContext(MyContext);
+  } = useContext(UserContext);
   const [users, setUsers] = useState([]);
 
   // Make user online

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import MyContext from "../../Context/MyContext";
+import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
 import { Footer } from "./Footer";
@@ -7,7 +7,7 @@ import { Footer } from "./Footer";
 export const ChatWindow = () => {
   const api = useAxios();
   const { activeConversationUser, socket, loggedInUser } =
-    useContext(MyContext);
+    useContext(UserContext);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
