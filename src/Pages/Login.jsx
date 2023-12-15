@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../Config/Baseurl";
 import {
-  Form,
+  LoginForm,
   LoginContainer,
   PasswordVisibility,
 } from "../Styles/Pages/Login";
@@ -47,12 +47,8 @@ export const Login = () => {
           "Error",
           "Network Error, Please check your internet connection"
         );
-      } else if (err.response.data.error === "User not exists") {
-        showToastMessage("Error", "User does not exists");
-      } else if (err.response.data.error === "Invalid Credentials") {
-        showToastMessage("Error", "Invalid Credentials");
       } else {
-        showToastMessage("Error", "Something went wrong");
+        showToastMessage("Error", err.response.data.error);
       }
     }
   };
@@ -80,12 +76,8 @@ export const Login = () => {
           "Error",
           "Network Error, Please check your internet connection"
         );
-      } else if (err.response.data.error === "User not exists") {
-        showToastMessage("Error", "User does not exists");
-      } else if (err.response.data.error === "Invalid Credentials") {
-        showToastMessage("Error", "Invalid Credentials");
       } else {
-        showToastMessage("Error", "Something went wrong");
+        showToastMessage("Error", err.response.data.error);
       }
     }
   };
@@ -96,7 +88,7 @@ export const Login = () => {
 
   return (
     <LoginContainer>
-      <Form onSubmit={handleLoginSubmit}>
+      <LoginForm onSubmit={handleLoginSubmit}>
         <InputGroup>
           <label htmlFor="email">Email</label>
           <input
@@ -126,7 +118,7 @@ export const Login = () => {
           </PasswordVisibility>
         </InputGroup>
         <PrimaryButton type="submit">Login</PrimaryButton>
-      </Form>
+      </LoginForm>
 
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <GoogleLogin
