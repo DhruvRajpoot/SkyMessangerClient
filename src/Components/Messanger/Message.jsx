@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import UserContext from "../../Context/UserContext";
 import { formateDate, formateTime } from "../../Utils/common";
+import { MessangerContainer } from "../../Styles/Components/Messanger/Message";
 
 export const Message = ({ message }) => {
   const { activeConversationUser } = useContext(UserContext);
@@ -9,11 +10,10 @@ export const Message = ({ message }) => {
   );
 
   return (
-    <div className="border flex gap-2">
-      <p>{msgByMe ? "Me" : activeConversationUser.fullname} :</p>
+    <MessangerContainer msgByMe={msgByMe}>
       <p>{message.message}</p>
-      <small>{formateDate(message.createdAt)}</small>
+      {/* <small>{formateDate(message.createdAt)}</small> */}
       <small>{formateTime(message.createdAt)}</small>
-    </div>
+    </MessangerContainer>
   );
 };

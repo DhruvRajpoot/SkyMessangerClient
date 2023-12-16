@@ -6,6 +6,12 @@ import { Conversation } from "../Components/Messanger/Conversation";
 import { ChatWindow } from "../Components/Messanger/ChatWindow";
 import { io } from "socket.io-client";
 import { SERVER_URL } from "../Config/Baseurl";
+import {
+  LeftContainer,
+  MessangerContainer,
+  MessangerWrapper,
+  RightContainer,
+} from "../Styles/Pages/Messanger";
 
 export const Messanger = () => {
   const api = useAxios();
@@ -45,11 +51,11 @@ export const Messanger = () => {
   return (
     <div>
       {loggedInUser !== null ? (
-        <div>
+        <MessangerContainer>
           <h1>LoggedIn user {loggedInUser.email}</h1>
-          <div className="flex justify-between">
+          <MessangerWrapper>
             {/* Left Side to show all user */}
-            <div>
+            <LeftContainer>
               {users.map(
                 (user) =>
                   user._id !== loggedInUser._id && (
@@ -63,18 +69,18 @@ export const Messanger = () => {
                     </div>
                   )
               )}
-            </div>
+            </LeftContainer>
 
             {/* Right Side to show selected user chat window*/}
-            <div>
+            <RightContainer>
               {activeConversationUser !== null ? (
                 <ChatWindow />
               ) : (
                 <div>Please select a user to start chat</div>
               )}
-            </div>
-          </div>
-        </div>
+            </RightContainer>
+          </MessangerWrapper>
+        </MessangerContainer>
       ) : (
         <Navigate to="/login" />
       )}

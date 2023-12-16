@@ -3,6 +3,14 @@ import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
 import { Footer } from "./Footer";
+import {
+  ChatWindowContainer,
+  Header,
+  LeftContainer,
+  MessageContainer,
+  MiddleContainer,
+  RightContainer,
+} from "../../Styles/Components/Messanger/ChatWindow";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -97,24 +105,29 @@ export const ChatWindow = () => {
   }, [socket, loggedInUser]);
 
   return (
-    <div className="bg-gray-300">
-      <h1>{activeConversationUser.email}</h1>
-      <h1>{activeConversationUser.fullname}</h1>
+    <ChatWindowContainer>
+      <Header>
+        <LeftContainer>{activeConversationUser.fullname[0]}</LeftContainer>
+        <MiddleContainer>
+          <h3>{activeConversationUser.email}</h3>
+          <h3>{activeConversationUser.fullname}</h3>
+        </MiddleContainer>
+        <RightContainer>menu {/* Menu Icon */}</RightContainer>
+      </Header>
 
-      <h1>Messages</h1>
-      <div className="bg-blue-50">
+      <MessageContainer>
         {allMessages.map((message) => (
           <div key={message._id}>
             <Message message={message} />
           </div>
         ))}
-      </div>
+      </MessageContainer>
 
       <Footer
         message={message}
         setMessage={setMessage}
         handleMessageSend={handleMessageSend}
       />
-    </div>
+    </ChatWindowContainer>
   );
 };
