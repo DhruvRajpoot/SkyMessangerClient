@@ -38,7 +38,9 @@ export const RightContainer = styled.div`
 export const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
   gap: 1rem;
   height: 100%;
   padding: 1rem 0.5rem;
+  max-height: 75vh;
 `;

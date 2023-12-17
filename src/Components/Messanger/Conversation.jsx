@@ -21,7 +21,7 @@ export const Conversation = ({ user }) => {
       </MiddleContainer>
 
       <RightContainer>
-        {isOnline ? <OnlineIndicator online /> : <OnlineIndicator />}
+        <OnlineIndicator useronline={isOnline ? "true" : "false"} />
       </RightContainer>
     </ConversationContainer>
   );

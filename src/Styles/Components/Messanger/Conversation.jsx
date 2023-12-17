@@ -33,5 +33,5 @@ export const OnlineIndicator = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${(props) => (props.online ? "#01e901" : "#de0404")};
+  background: ${(props) => (props.useronline == "true" ? "#01e901" : "#de0404")};
 `;

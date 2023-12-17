@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
@@ -46,6 +46,10 @@ export const ChatWindow = () => {
       console.log(`Error while creating conversation: ${error}`);
     }
   };
+
+  useEffect(() => {
+    setUpConversation();
+  }, [activeConversationUser]);
 
   const handleMessageSend = async (e) => {
     e.preventDefault();
@@ -95,6 +99,7 @@ export const ChatWindow = () => {
     if (socket) {
       socket.on("getMessage", ({ message, receiverId }) => {
         loggedInUser._id === receiverId &&
+          activeConversationUser._id === message.senderId &&
           setAllMessages((prev) => [...prev, message]);
       });
 
@@ -102,7 +107,18 @@ export const ChatWindow = () => {
         socket.off("getMessage");
       };
     }
-  }, [socket, loggedInUser]);
+  }, [socket, loggedInUser, activeConversationUser]);
+
+  // Auto Scroll to bottom
+  const autoScrollRef = useRef(null);
+  useEffect(() => {
+    if (allMessages.length) {
+      autoScrollRef.current?.scrollIntoView({
+        behaviour: "smooth",
+        block: "end",
+      });
+    }
+  }, [allMessages.length]);
 
   return (
     <ChatWindowContainer>
@@ -121,6 +137,7 @@ export const ChatWindow = () => {
             <Message message={message} />
           </div>
         ))}
+        <div ref={autoScrollRef} />
       </MessageContainer>
 
       <Footer

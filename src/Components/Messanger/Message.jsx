@@ -5,12 +5,10 @@ import { MessangerContainer } from "../../Styles/Components/Messanger/Message";
 
 export const Message = ({ message }) => {
   const { activeConversationUser } = useContext(UserContext);
-  const [msgByMe, setMsgByMe] = useState(
-    message.senderId !== activeConversationUser._id ? true : false
-  );
+  const msgByMe = message.senderId !== activeConversationUser._id ? "true" : "false";
 
   return (
-    <MessangerContainer msgByMe={msgByMe}>
+    <MessangerContainer msgbyme={msgByMe}>
       <p>{message.message}</p>
       {/* <small>{formateDate(message.createdAt)}</small> */}
       <small>{formateTime(message.createdAt)}</small>
