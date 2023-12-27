@@ -19,7 +19,6 @@ export const Messanger = () => {
     loggedInUser,
     activeConversationUser,
     setActiveConversationUser,
-    socket,
     setSocket,
   } = useContext(UserContext);
   const [users, setUsers] = useState([]);

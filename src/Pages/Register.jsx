@@ -49,7 +49,7 @@ export const Register = () => {
 
   const handleGoogleSuccess = async (res) => {
     try {
-      const response = await axios.post(`${SERVER_URL}/auth/google/signup`, {
+      const response = await axios.post(`${SERVER_URL}/auth/google/register`, {
         googleToken: res.credential,
       });
 
@@ -135,7 +135,7 @@ export const Register = () => {
         <button> Go to Messanger</button>
       </Link>
 
-      <Link to={"/register"}>
+      <Link to={"/login"}>
         <button> Go to Login</button>
       </Link>
     </RegisterContainer>
