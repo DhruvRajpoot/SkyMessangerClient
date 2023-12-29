@@ -5,12 +5,14 @@ import { Message } from "./Message";
 import { Footer } from "./Footer";
 import {
   ChatWindowContainer,
+  DateBlock,
   Header,
   LeftContainer,
   MessageContainer,
   MiddleContainer,
   RightContainer,
 } from "../../Styles/Components/Messanger/ChatWindow";
+import { formateDate } from "../../Utils/common";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -120,6 +122,19 @@ export const ChatWindow = () => {
     }
   }, [allMessages.length]);
 
+  // Show Date when date changes (when new day starts)
+  const showDateOnChange = (message, index) => {
+    if (index === 0) {
+      return true;
+    }
+    const currentDate = new Date(message.createdAt).toLocaleDateString();
+    const previousDate = new Date(
+      allMessages[index - 1].createdAt
+    ).toLocaleDateString();
+
+    return currentDate !== previousDate;
+  };
+
   return (
     <ChatWindowContainer>
       <Header>
@@ -132,8 +147,11 @@ export const ChatWindow = () => {
       </Header>
 
       <MessageContainer>
-        {allMessages.map((message) => (
+        {allMessages.map((message, index) => (
           <div key={message._id}>
+            {showDateOnChange(message, index) && (
+              <DateBlock>{formateDate(message.createdAt)}</DateBlock>
+            )}
             <Message message={message} />
           </div>
         ))}

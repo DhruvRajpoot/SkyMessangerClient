@@ -44,3 +44,15 @@ export const MessageContainer = styled.div`
   padding: 1rem 0.5rem;
   max-height: 75vh;
 `;
+
+export const DateBlock = styled.div`
+  width: fit-content;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: calc(0.6rem + 0.2vw);
+  padding: 7px 10px;
+  border-radius: 0.5rem;
+  background-color: #dffca3;
+  margin-bottom: 1rem;
+  `;
