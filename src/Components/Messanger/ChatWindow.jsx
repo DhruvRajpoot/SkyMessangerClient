@@ -16,55 +16,56 @@ import { formateDate } from "../../Utils/common";
 
 export const ChatWindow = () => {
   const api = useAxios();
-  const { activeConversationUser, socket, loggedInUser } =
-    useContext(UserContext);
+  const { activeConversationUser, socket } = useContext(UserContext);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
 
-  const fetchConversation = async () => {
+  // Fetch Conversation Id of active conversation user
+  const fetchConversationId = async () => {
     try {
-      const { data } = await api.post("/conversation/find", {
-        receiverId: activeConversationUser._id,
-      });
-      if (data.length > 0) {
-        setConversationId(data[0]._id);
-        return data[0]._id;
-      }
-      return null;
-    } catch (error) {
-      console.log(`Error while fetching conversation: ${error}`);
-    }
-  };
-
-  const setUpConversation = async () => {
-    try {
-      const { data } = await api.post("/conversation/create", {
+      const { data } = await api.post("/conversation/fetch", {
         receiverId: activeConversationUser._id,
       });
       setConversationId(data._id);
       return data._id;
     } catch (error) {
-      console.log(`Error while creating conversation: ${error}`);
+      console.log(`Error while fetching conversation id : ${error}`);
+    }
+  };
+
+  // Fetch messages of active conversation user
+  const fetchMessages = async (id) => {
+    try {
+      const { data } = await api.post(`/messages/getmessages/${id}`);
+      setAllMessages(data);
+    } catch (error) {
+      console.log(`Error while fetching messages: ${error}`);
+    }
+  };
+
+  // Function to call fetchConversationId and fetchMessages
+  const fetchConversationIdAndMessages = async () => {
+    let tempConversationId = await fetchConversationId();
+    if (tempConversationId !== null) {
+      fetchMessages(tempConversationId);
     }
   };
 
   useEffect(() => {
-    setUpConversation();
+    setAllMessages([]);
+    fetchConversationIdAndMessages();
   }, [activeConversationUser]);
 
+  // Handle Message Send
   const handleMessageSend = async (e) => {
     e.preventDefault();
     try {
-      let tempConversationId = "";
-      if (conversationId === null) {
-        tempConversationId = await setUpConversation();
-      }
       const { data } = await api.post("/messages/create", {
-        conversationId: conversationId || tempConversationId,
+        conversationId: conversationId,
         message,
       });
-      fetchMessages(conversationId || tempConversationId);
+      setAllMessages((prev) => [...prev, data]);
       setMessage("");
       socket.emit("sendMessage", {
         receiverId: activeConversationUser._id,
@@ -75,41 +76,26 @@ export const ChatWindow = () => {
     }
   };
 
-  const fetchMessages = async (id) => {
-    try {
-      const { data } = await api.post(`/messages/getmessages/${id}`);
-      setAllMessages(data);
-    } catch (error) {
-      console.log(`Error while fetching messages: ${error}`);
-    }
-  };
-
-  const fetchConversationAndMessages = async () => {
-    let tempConversationId = await fetchConversation();
-    if (tempConversationId !== null) {
-      fetchMessages(tempConversationId);
-    }
-  };
-
+  // Active Conversation User Ref
+  const activeConversationUserRef = useRef();
   useEffect(() => {
-    setAllMessages([]);
-    fetchConversationAndMessages();
+    activeConversationUserRef.current = activeConversationUser;
   }, [activeConversationUser]);
 
   // Receive Message from Socket
   useEffect(() => {
     if (socket) {
       socket.on("getMessage", ({ message, receiverId }) => {
-        loggedInUser._id === receiverId &&
-          activeConversationUser._id === message.senderId &&
-          setAllMessages((prev) => [...prev, message]);
+        activeConversationUserRef.current._id !== message.senderId
+          ? console.log("show notification")
+          : setAllMessages((prev) => [...prev, message]);
       });
 
       return () => {
         socket.off("getMessage");
       };
     }
-  }, [socket, loggedInUser, activeConversationUser]);
+  }, []);
 
   // Auto Scroll to bottom
   const autoScrollRef = useRef(null);
