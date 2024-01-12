@@ -10,7 +10,7 @@ import {
 
 export const Conversation = ({ user }) => {
   const { onlineUsers } = useContext(UserContext);
-  const isOnline = onlineUsers.find((u) => u._id === user._id);
+  const isOnline = onlineUsers.find((id) => id === user._id);
 
   return (
     <ConversationContainer>

@@ -34,7 +34,7 @@ export const Login = () => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
-        };expires=${new Date().getTime() + 7 * 24 * 60 * 60 * 1000}`;
+        };Max-Age=${7 * 24 * 60 * 60}`;
         showToastMessage("Success", "Login Successfully");
         navigate("/messanger");
         setEmail("");
@@ -65,7 +65,7 @@ export const Login = () => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
-        };expires=${new Date().getTime() + 7 * 24 * 60 * 60 * 1000}`;
+        };Max-Age=${7 * 24 * 60 * 60}`;
         navigate("/messanger");
         showToastMessage("Success", "Login Successfully");
       }
