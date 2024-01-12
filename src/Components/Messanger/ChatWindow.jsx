@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
@@ -16,10 +22,21 @@ import { formateDate } from "../../Utils/common";
 
 export const ChatWindow = () => {
   const api = useAxios();
-  const { activeConversationUser, socket } = useContext(UserContext);
+  const { activeConversationUser, socket, loggedInUser } =
+    useContext(UserContext);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
+
+  let typingTimeout = null;
+  const [isTyping, setIsTyping] = useState(false);
+  const lastTimeTypingSent = useRef(0);
+
+  // Active Conversation User Ref
+  const activeConversationUserRef = useRef();
+  useEffect(() => {
+    activeConversationUserRef.current = activeConversationUser;
+  }, [activeConversationUser]);
 
   // Fetch Conversation Id of active conversation user
   const fetchConversationId = async () => {
@@ -52,7 +69,10 @@ export const ChatWindow = () => {
     }
   };
 
+  // Effect runs when activeConversationUser changes
   useEffect(() => {
+    setIsTyping(false);
+    setMessage("");
     setAllMessages([]);
     fetchConversationIdAndMessages();
   }, [activeConversationUser]);
@@ -76,11 +96,36 @@ export const ChatWindow = () => {
     }
   };
 
-  // Active Conversation User Ref
-  const activeConversationUserRef = useRef();
-  useEffect(() => {
-    activeConversationUserRef.current = activeConversationUser;
-  }, [activeConversationUser]);
+  const sendIsTypingEvent = (isTyping) => {
+    socket.emit("isTyping", {
+      senderId: loggedInUser._id,
+      receiverId: activeConversationUser._id,
+      isTyping,
+    });
+  };
+
+  const handleTyping = async (e) => {
+    if (e.target.value === "" || !socket) return;
+    try {
+      clearTimeout(typingTimeout);
+
+      if (e.key === "Enter") {
+        sendIsTypingEvent(false);
+        return;
+      }
+
+      if (Date.now() - lastTimeTypingSent.current > 3000) {
+        sendIsTypingEvent(true);
+        lastTimeTypingSent.current = Date.now();
+
+        typingTimeout = setTimeout(() => {
+          sendIsTypingEvent(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(`Error while typing: ${error}`);
+    }
+  };
 
   // Receive Message from Socket
   useEffect(() => {
@@ -93,6 +138,21 @@ export const ChatWindow = () => {
 
       return () => {
         socket.off("getMessage");
+      };
+    }
+  }, []);
+
+  // Receive isTyping from Socket
+  useEffect(() => {
+    if (socket) {
+      socket.on("isTyping", ({ senderId, isTyping }) => {
+        if (activeConversationUserRef.current._id === senderId) {
+          setIsTyping(isTyping);
+        }
+      });
+
+      return () => {
+        socket.off("isTyping");
       };
     }
   }, []);
@@ -148,7 +208,9 @@ export const ChatWindow = () => {
         message={message}
         setMessage={setMessage}
         handleMessageSend={handleMessageSend}
+        handleTyping={handleTyping}
       />
+      {isTyping && <div>typing...</div>}
     </ChatWindowContainer>
   );
 };
