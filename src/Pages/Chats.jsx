@@ -10,8 +10,13 @@ import {
   ChatContainer,
   ChatWrapper,
   LeftContainer,
+  ProfilePic,
   RightContainer,
+  Sidebar,
+  Title,
+  UsersList,
 } from "../Styles/Pages/Chats";
+import { SideDrawer } from "../Components/Chats/SideDrawer";
 
 export const Chats = () => {
   const api = useAxios();
@@ -22,6 +27,12 @@ export const Chats = () => {
     setSocket,
   } = useContext(UserContext);
   const [users, setUsers] = useState([]);
+
+  const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+
+  const toggleSideDrawer = () => {
+    setIsSideDrawerOpen(!isSideDrawerOpen);
+  };
 
   // Make user online
   useEffect(() => {
@@ -53,21 +64,38 @@ export const Chats = () => {
         <ChatContainer>
           <h1>LoggedIn user {loggedInUser.email}</h1>
           <ChatWrapper>
-            {/* Left Side to show all user */}
+            {/* Sidebar to show additional info */}
+            <Sidebar>
+              <ProfilePic
+                src={loggedInUser.profilePic}
+                onClick={toggleSideDrawer}
+              />
+
+              <SideDrawer
+                toggleSideDrawer={toggleSideDrawer}
+                isOpen={isSideDrawerOpen}
+              />
+            </Sidebar>
+
+            {/* User List to show all user */}
             <LeftContainer>
-              {users.map(
-                (user) =>
-                  user._id !== loggedInUser._id && (
-                    <div
-                      key={user._id}
-                      onClick={() => {
-                        setActiveConversationUser(user);
-                      }}
-                    >
-                      <UserTile user={user} />
-                    </div>
-                  )
-              )}
+              <Title>Chats</Title>
+
+              <UsersList>
+                {users.map(
+                  (user) =>
+                    user._id !== loggedInUser._id && (
+                      <div
+                        key={user._id}
+                        onClick={() => {
+                          setActiveConversationUser(user);
+                        }}
+                      >
+                        <UserTile user={user} />
+                      </div>
+                    )
+                )}
+              </UsersList>
             </LeftContainer>
 
             {/* Right Side to show selected user chat window*/}
