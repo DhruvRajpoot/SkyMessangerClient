@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
@@ -18,11 +12,13 @@ import {
   MiddleContainer,
   RightContainer,
 } from "../../Styles/Components/Messanger/ChatWindow";
-import { formateDate } from "../../Utils/common";
+import { formateDate, formateDateAndTime } from "../../Utils/common";
+import axios from "axios";
+import { SERVER_URL } from "../../Config/Baseurl";
 
 export const ChatWindow = () => {
   const api = useAxios();
-  const { activeConversationUser, socket, loggedInUser } =
+  const { activeConversationUser, socket, loggedInUser, onlineUsers } =
     useContext(UserContext);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
@@ -37,6 +33,24 @@ export const ChatWindow = () => {
   useEffect(() => {
     activeConversationUserRef.current = activeConversationUser;
   }, [activeConversationUser]);
+
+  // Active Conversation User Lastseen
+  const [activeConversationUserLastSeen, setActiveConversationUserLastSeen] =
+    useState(null);
+
+  // Fetch Active Conversation User Last Seen
+  const fetchActiveConversationUserLastSeen = async () => {
+    try {
+      const { data } = await axios.post(`${SERVER_URL}/user/getlastseen`, {
+        userId: activeConversationUser._id,
+      });
+      setActiveConversationUserLastSeen(data.lastseen);
+    } catch (error) {
+      console.log(
+        `Error while fetching active conversation user last seen: ${error}`
+      );
+    }
+  };
 
   // Fetch Conversation Id of active conversation user
   const fetchConversationId = async () => {
@@ -71,10 +85,21 @@ export const ChatWindow = () => {
 
   // Effect runs when activeConversationUser changes
   useEffect(() => {
+    setActiveConversationUserLastSeen(null);
     setIsTyping(false);
     setMessage("");
     setAllMessages([]);
     fetchConversationIdAndMessages();
+
+    const isUserOnline = onlineUsers.find(
+      (id) => id === activeConversationUserRef.current._id
+    );
+
+    if (isUserOnline) {
+      setActiveConversationUserLastSeen("Online");
+    } else {
+      fetchActiveConversationUserLastSeen();
+    }
   }, [activeConversationUser]);
 
   // Handle Message Send
@@ -142,6 +167,14 @@ export const ChatWindow = () => {
     }
   }, []);
 
+  // Receive updateLastseen from Socket
+  useEffect(() => {
+    const isUserOnline = onlineUsers.find(
+      (id) => id === activeConversationUserRef.current._id
+    );
+    setActiveConversationUserLastSeen(isUserOnline ? "Online" : Date.now());
+  }, [onlineUsers]);
+
   // Receive isTyping from Socket
   useEffect(() => {
     if (socket) {
@@ -188,6 +221,14 @@ export const ChatWindow = () => {
         <MiddleContainer>
           <h3>{activeConversationUser.email}</h3>
           <h3>{activeConversationUser.fullname}</h3>
+          <p>
+            {activeConversationUserLastSeen &&
+              (activeConversationUserLastSeen === "Online"
+                ? "Online"
+                : `Last seen ${formateDateAndTime(
+                    activeConversationUserLastSeen
+                  )}`)}
+          </p>
         </MiddleContainer>
         <RightContainer>menu {/* Menu Icon */}</RightContainer>
       </Header>

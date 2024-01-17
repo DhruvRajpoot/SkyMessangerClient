@@ -43,3 +43,7 @@ export const formateTime = (date) => {
   const strTime = hours + ":" + minutes + " " + ampm;
   return strTime;
 };
+
+export const formateDateAndTime = (date) => {
+  return `${formateDate(date).toLowerCase()} at ${formateTime(date)}`;
+};

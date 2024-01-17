@@ -33,7 +33,7 @@ export const Register = () => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
-        };Max-Age=${7 * 24 * 60 * 60}`;
+        }; Max-Age=${7 * 24 * 60 * 60}`;
         navigate("/messanger");
         showToastMessage("Success", "Register Successfully");
       }
@@ -62,7 +62,7 @@ export const Register = () => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
-        };Max-Age=${7 * 24 * 60 * 60}`;
+        }; Max-Age=${7 * 24 * 60 * 60}`;
         showToastMessage("Success", "Register Successfully");
         navigate("/messanger");
       }
