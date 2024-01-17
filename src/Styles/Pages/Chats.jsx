@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-export const MessangerContainer = styled.div`
+export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
 `;
 
-export const MessangerWrapper = styled.div`
+export const ChatWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 1rem;

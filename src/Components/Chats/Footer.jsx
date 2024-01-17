@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "../../Styles/Components/Messanger/Footer";
+import { Form } from "../../Styles/Components/Chats/Footer";
 import { BsSendFill } from "react-icons/bs";
 
 export const Footer = ({

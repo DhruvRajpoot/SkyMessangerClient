@@ -137,8 +137,8 @@ export const Register = () => {
         />
       </GoogleOAuthProvider>
 
-      <Link to={"/messanger"}>
-        <button> Go to Messanger</button>
+      <Link to={"/chats"}>
+        <button> Go to Chat Page</button>
       </Link>
 
       <Link to={"/login"}>

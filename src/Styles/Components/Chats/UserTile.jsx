@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ConversationContainer = styled.div`
+export const UserTileContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   border: 1px solid black;

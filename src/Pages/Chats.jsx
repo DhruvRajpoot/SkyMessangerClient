@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../Context/UserContext";
 import { Navigate } from "react-router-dom";
 import useAxios from "../Utils/useAxios";
-import { Conversation } from "../Components/Messanger/Conversation";
-import { ChatWindow } from "../Components/Messanger/ChatWindow";
+import { UserTile } from "../Components/Chats/UserTile";
+import { ChatWindow } from "../Components/Chats/ChatWindow";
 import { io } from "socket.io-client";
 import { SERVER_URL } from "../Config/Baseurl";
 import {
+  ChatContainer,
+  ChatWrapper,
   LeftContainer,
-  MessangerContainer,
-  MessangerWrapper,
   RightContainer,
-} from "../Styles/Pages/Messanger";
+} from "../Styles/Pages/Chats";
 
-export const Messanger = () => {
+export const Chats = () => {
   const api = useAxios();
   const {
     loggedInUser,
@@ -50,9 +50,9 @@ export const Messanger = () => {
   return (
     <div>
       {loggedInUser !== null ? (
-        <MessangerContainer>
+        <ChatContainer>
           <h1>LoggedIn user {loggedInUser.email}</h1>
-          <MessangerWrapper>
+          <ChatWrapper>
             {/* Left Side to show all user */}
             <LeftContainer>
               {users.map(
@@ -64,7 +64,7 @@ export const Messanger = () => {
                         setActiveConversationUser(user);
                       }}
                     >
-                      <Conversation user={user} />
+                      <UserTile user={user} />
                     </div>
                   )
               )}
@@ -78,8 +78,8 @@ export const Messanger = () => {
                 <div>Please select a user to start chat</div>
               )}
             </RightContainer>
-          </MessangerWrapper>
-        </MessangerContainer>
+          </ChatWrapper>
+        </ChatContainer>
       ) : (
         <Navigate to="/login" />
       )}

@@ -11,7 +11,7 @@ import {
   MessageContainer,
   MiddleContainer,
   RightContainer,
-} from "../../Styles/Components/Messanger/ChatWindow";
+} from "../../Styles/Components/Chats/ChatWindow";
 import { formateDate, formateDateAndTime } from "../../Utils/common";
 import axios from "axios";
 import { SERVER_URL } from "../../Config/Baseurl";

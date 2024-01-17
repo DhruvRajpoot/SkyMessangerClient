@@ -129,8 +129,8 @@ export const Login = () => {
         />
       </GoogleOAuthProvider>
 
-      <Link to={"/messanger"}>
-        <button> Go to Messanger</button>
+      <Link to={"/chats"}>
+        <button> Go to Chat Page</button>
       </Link>
 
       <Link to={"/register"}>
