@@ -36,7 +36,7 @@ export const Login = () => {
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
         showToastMessage("Success", "Login Successfully");
-        navigate("/messanger");
+        navigate("/chats");
         setEmail("");
         setPassword("");
       }
@@ -66,7 +66,7 @@ export const Login = () => {
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
-        navigate("/messanger");
+        navigate("/chats");
         showToastMessage("Success", "Login Successfully");
       }
     } catch (err) {

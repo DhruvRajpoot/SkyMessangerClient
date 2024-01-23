@@ -34,7 +34,7 @@ export const Register = () => {
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
-        navigate("/messanger");
+        navigate("/chats");
         showToastMessage("Success", "Register Successfully");
       }
     } catch (err) {
@@ -64,7 +64,7 @@ export const Register = () => {
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
         showToastMessage("Success", "Register Successfully");
-        navigate("/messanger");
+        navigate("/chats");
       }
     } catch (err) {
       console.log(err);

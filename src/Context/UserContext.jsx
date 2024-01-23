@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
@@ -5,6 +6,13 @@ const UserContext = createContext();
 export default UserContext;
 
 const UserContextProvider = ({ children }) => {
+  // Access Token
+  const [accessToken, setAccessToken] = useState(() =>
+    localStorage.getItem("accessToken")
+      ? localStorage.getItem("accessToken")
+      : null
+  );
+
   // Logged In User Data
   const [loggedInUser, setLoggedInUser] = useState(() =>
     localStorage.getItem("user")
@@ -14,11 +22,16 @@ const UserContextProvider = ({ children }) => {
 
   // Update Logged In User Data
   useEffect(() => {
-    const loggedInUserData = JSON.parse(localStorage.getItem("user"));
-    if (loggedInUserData) {
-      setLoggedInUser(loggedInUserData);
+    try {
+      if (accessToken !== null) {
+        const user = jwtDecode(accessToken);
+        setLoggedInUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }, []);
+  }, [accessToken]);
 
   // Active Conversation User
   const [activeConversationUser, setActiveConversationUser] = useState(null);

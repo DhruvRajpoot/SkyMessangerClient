@@ -62,7 +62,6 @@ export const Chats = () => {
     <div>
       {loggedInUser !== null ? (
         <ChatContainer>
-          <h1>LoggedIn user {loggedInUser.email}</h1>
           <ChatWrapper>
             {/* Sidebar to show additional info */}
             <Sidebar>

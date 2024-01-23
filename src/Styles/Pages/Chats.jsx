@@ -8,6 +8,7 @@ export const ChatContainer = styled.div`
 
 export const ChatWrapper = styled.div`
   display: flex;
+  height: 100vh; // Make the chat window take up the entire screen // *** Important //
 `;
 
 export const Sidebar = styled.div`

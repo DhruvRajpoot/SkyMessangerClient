@@ -8,25 +8,55 @@ export const BlackColor = "#000";
 
 // Styled Components
 export const PrimaryButton = styled.button`
+  width: ${(props) => props.width || "auto"};
   background-color: ${PrimaryColor};
-  color: ${SecondaryColor};
-  font-size: 1rem;
+  color: white;
+  font-size: ${(props) => props.fontsize || "1rem"};
+  font-weight: 400;
+  line-height: 1.5;
+  padding: ${(props) => props.padding || "0.375rem 0.75rem"};
+  margin: ${(props) => props.margin || "0"};
+  border: none;
+  border-radius: 10px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${SecondaryColor};
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const SecondaryButton = styled.button`
+  width: ${(props) => props.width || "auto"};
+  background-color: transparent;
+  color: ${PrimaryColor};
+  font-size: ${(props) => props.fontsize || "1rem"};
   font-weight: 400;
   line-height: 1.5;
   padding: 0.375rem 0.75rem;
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 0.25rem;
-  cursor: pointer;
+  outline: none;
+  border: 1px solid ${PrimaryColor};
+  border-radius: 10px;
   transition: all 0.15s ease-in-out;
+  cursor: pointer;
 
   &:hover {
-    background-color: #3e8e94;
+    background-color: ${SecondaryColor};
+    border: 1px solid ${SecondaryColor};
+    color: white;
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.25rem rgba(86, 178, 188, 0.5);
+  &:active {
+    transform: scale(0.95);
   }
 
   &:disabled {
