@@ -7,6 +7,7 @@ import {
   OnlineIndicator,
   RightContainer,
 } from "../../Styles/Components/Chats/UserTile";
+import { ProfilePic } from "../../Styles/Pages/Chats";
 
 export const UserTile = ({ user }) => {
   const { onlineUsers } = useContext(UserContext);
@@ -14,10 +15,12 @@ export const UserTile = ({ user }) => {
 
   return (
     <UserTileContainer>
-      <LeftContainer>{user.fullname[0]}</LeftContainer>
+      <LeftContainer>
+        <ProfilePic src={user?.profileInfo?.pic} />
+      </LeftContainer>
       <MiddleContainer>
-        <h3>{user.email}</h3>
-        <p>{user.fullname}</p>
+        <h3>{user?.email}</h3>
+        <p>{user?.fullname}</p>
       </MiddleContainer>
 
       <RightContainer>

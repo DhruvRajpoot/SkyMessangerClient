@@ -2,9 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Input,
   Label,
-  ProfilePic,
-  ProfilePicContainer,
-  ProfilePicHover,
   SideDrawerContainer,
   SideDrawerWrapper,
   Heading,
@@ -16,6 +13,8 @@ import UserContext from "../../Context/UserContext";
 import { PrimaryButton } from "../../Styles/Common";
 import useAxios from "../../Utils/useAxios";
 import MyContext from "../../Context/MyContext";
+import { MdEdit, MdOutlineCancel } from "react-icons/md";
+import { ProfilePicComponent } from "./ProfilePicComponent";
 
 export const SideDrawer = (props) => {
   const api = useAxios();
@@ -96,13 +95,7 @@ export const SideDrawer = (props) => {
     <SideDrawerContainer isopen={props.isOpen.toString()} ref={sideDrawerRef}>
       <SideDrawerWrapper>
         <Heading>My account</Heading>
-
-        <ProfilePicContainer>
-          <ProfilePic src="https://picsum.photos/200" />
-          <ProfilePicHover>
-            <p>Change Profile Pic</p>
-          </ProfilePicHover>
-        </ProfilePicContainer>
+        <ProfilePicComponent />
 
         <ProfileTextContainer>
           <Label htmlFor="fullname">Full Name</Label>
@@ -116,8 +109,11 @@ export const SideDrawer = (props) => {
               iseditable={isFullNameEdit.toString()}
             />
 
-            <EditButton onClick={handleFullNameEditClick}>
-              {isFullNameEdit ? "Cancel" : "Edit"}
+            <EditButton
+              title={isFullNameEdit ? "Cancel" : "Edit"}
+              onClick={handleFullNameEditClick}
+            >
+              {isFullNameEdit ? <MdOutlineCancel /> : <MdEdit />}
             </EditButton>
           </InputContainer>
 
@@ -147,12 +143,15 @@ export const SideDrawer = (props) => {
               iseditable={isBioEdit.toString()}
             />
 
-            <EditButton onClick={handleBioEditClick}>
-              {isBioEdit ? "Cancel" : "Edit"}
+            <EditButton
+              title={isBioEdit ? "Cancel" : "Edit"}
+              onClick={handleBioEditClick}
+            >
+              {isBioEdit ? <MdOutlineCancel /> : <MdEdit />}
             </EditButton>
           </InputContainer>
 
-          {isBioEdit && bio !== loggedInUser?.bio && (
+          {isBioEdit && bio !== loggedInUser?.profileInfo?.bio && (
             <PrimaryButton
               style={{
                 fontSize: ".9rem",

@@ -34,53 +34,16 @@ export const Heading = styled.h1`
   font-size: 1.5rem;
 `;
 
-export const ProfilePicContainer = styled.div`
-  min-width: 150px;
-  min-height: 150px;
-  max-width: 150px;
-  max-height: 150px;
-  border-radius: 50%;
-  position: relative;
-  border: 1px solid black;
-`;
-
-export const ProfilePicHover = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: all 0.2s ease-out;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-export const ProfilePic = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: contain;
-`;
-
 export const ProfileTextContainer = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
+  gap: .5rem;
 `;
 
 export const Label = styled.label`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #000000;
 `;
@@ -102,13 +65,11 @@ export const Input = styled.input`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 7px;
   right: 10px;
   background: transparent;
   border: none;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 1rem;
   color: #000000;
   cursor: pointer;
 `;

@@ -82,7 +82,7 @@ export const Chats = () => {
           {/* Sidebar to show additional info */}
           <Sidebar>
             <ProfilePic
-              src={loggedInUser?.profilePic}
+              src={loggedInUser?.profileInfo?.pic}
               onClick={toggleSideDrawer}
             />
 
