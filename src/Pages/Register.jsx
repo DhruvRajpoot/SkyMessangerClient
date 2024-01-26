@@ -11,8 +11,8 @@ import { InputGroup, PrimaryButton } from "../Styles/Common";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export const Register = () => {
-  const { setLoggedInUser } = useContext(UserContext);
-  const { showToastMessage } = useContext(MyContext);
+  const { setAccessToken } = useContext(UserContext);
+  const { showToastMessage, handleError } = useContext(MyContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,9 +28,8 @@ export const Register = () => {
         fullname,
       });
       if (response.status === 201) {
-        setLoggedInUser(response.data.user);
+        setAccessToken(response.data.token.accessToken);
         localStorage.setItem("accessToken", response.data.token.accessToken);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
@@ -38,15 +37,7 @@ export const Register = () => {
         showToastMessage("Success", "Register Successfully");
       }
     } catch (err) {
-      console.log(err);
-      if (err.code === "ERR_NETWORK") {
-        showToastMessage(
-          "Error",
-          "Network Error, Please check your internet connection"
-        );
-      } else {
-        showToastMessage("Error", err.response.data.error);
-      }
+      handleError(err);
     }
   };
 
@@ -57,9 +48,8 @@ export const Register = () => {
       });
 
       if (response.status === 201) {
-        setLoggedInUser(response.data.user);
+        setAccessToken(response.data.token.accessToken);
         localStorage.setItem("accessToken", response.data.token.accessToken);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
@@ -67,15 +57,7 @@ export const Register = () => {
         navigate("/chats");
       }
     } catch (err) {
-      console.log(err);
-      if (err.code === "ERR_NETWORK") {
-        showToastMessage(
-          "Error",
-          "Network Error, Please check your internet connection"
-        );
-      } else {
-        showToastMessage("Error", err.response.data.error);
-      }
+      handleError(err);
     }
   };
 

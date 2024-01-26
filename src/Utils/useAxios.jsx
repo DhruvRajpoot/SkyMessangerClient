@@ -22,14 +22,21 @@ const useAxios = () => {
 
   const axiosInstance = axios.create({
     baseURL: SERVER_URL,
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
   });
 
   axiosInstance.interceptors.request.use(async (req) => {
     try {
+      // Check if there is an access token
+      if (!accessToken || !refreshToken) {
+        throw new Error("No Token Found");
+      }
+
       const decoded = jwtDecode(accessToken);
+
       const isExpired = decoded.exp * 1000 < Date.now();
       if (!isExpired) return req;
+
       const response = await axios.post(`${SERVER_URL}/auth/getaccesstoken`, {
         refreshToken: refreshToken,
       });
@@ -39,6 +46,9 @@ const useAxios = () => {
     } catch (err) {
       console.log(err);
       navigate("/login");
+
+      // Cancel the request to prevent it from being sent
+      return Promise.reject(err);
     }
   });
 

@@ -8,11 +8,11 @@ const App = () => {
   return (
     <div>
       <GlobalStyle />
-      <UserContextProvider>
-        <MyContextProvider>
+      <MyContextProvider>
+        <UserContextProvider>
           <Router />
-        </MyContextProvider>
-      </UserContextProvider>
+        </UserContextProvider>
+      </MyContextProvider>
     </div>
   );
 };

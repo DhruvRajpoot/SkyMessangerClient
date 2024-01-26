@@ -15,8 +15,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { setLoggedInUser } = useContext(UserContext);
-  const { showToastMessage } = useContext(MyContext);
+  const { setAccessToken } = useContext(UserContext);
+  const { showToastMessage, handleError } = useContext(MyContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -29,9 +29,8 @@ export const Login = () => {
         password,
       });
       if (response.status === 200) {
-        setLoggedInUser(response.data.user);
+        setAccessToken(response.data.token.accessToken);
         localStorage.setItem("accessToken", response.data.token.accessToken);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
@@ -41,15 +40,7 @@ export const Login = () => {
         setPassword("");
       }
     } catch (err) {
-      console.log(err);
-      if (err.code === "ERR_NETWORK") {
-        showToastMessage(
-          "Error",
-          "Network Error, Please check your internet connection"
-        );
-      } else {
-        showToastMessage("Error", err.response.data.error);
-      }
+      handleError(err);
     }
   };
 
@@ -60,9 +51,8 @@ export const Login = () => {
       });
 
       if (response.status === 200) {
-        setLoggedInUser(response.data.user);
+        setAccessToken(response.data.token.accessToken);
         localStorage.setItem("accessToken", response.data.token.accessToken);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         document.cookie = `refreshToken=${
           response.data.token.refreshToken
         }; Max-Age=${7 * 24 * 60 * 60}`;
@@ -70,15 +60,7 @@ export const Login = () => {
         showToastMessage("Success", "Login Successfully");
       }
     } catch (err) {
-      console.log(err);
-      if (err.code === "ERR_NETWORK") {
-        showToastMessage(
-          "Error",
-          "Network Error, Please check your internet connection"
-        );
-      } else {
-        showToastMessage("Error", err.response.data.error);
-      }
+      handleError(err);
     }
   };
 

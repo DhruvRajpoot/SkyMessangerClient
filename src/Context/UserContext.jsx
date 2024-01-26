@@ -1,11 +1,16 @@
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { SERVER_URL } from "../Config/Baseurl";
+import MyContext from "./MyContext";
 
 const UserContext = createContext();
 
 export default UserContext;
 
 const UserContextProvider = ({ children }) => {
+  const { handleError } = useContext(MyContext);
+
   // Access Token
   const [accessToken, setAccessToken] = useState(() =>
     localStorage.getItem("accessToken")
@@ -15,18 +20,30 @@ const UserContextProvider = ({ children }) => {
 
   // Logged In User Data
   const [loggedInUser, setLoggedInUser] = useState(() =>
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
+    localStorage.getItem("user") ? null : null
   );
 
-  // Update Logged In User Data
+  // Fetch user data using access token
+  const fetchUserData = async (accessToken) => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/user/getuserdetails`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (response.status === 200) {
+        setLoggedInUser(response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
   useEffect(() => {
     try {
       if (accessToken !== null) {
-        const user = jwtDecode(accessToken);
-        setLoggedInUser(user);
-        localStorage.setItem("user", JSON.stringify(user));
+        fetchUserData(accessToken);
       }
     } catch (err) {
       console.log(err);
@@ -42,7 +59,7 @@ const UserContextProvider = ({ children }) => {
   // Socket Connection
   const [socket, setSocket] = useState(null);
 
-  // Online Users List
+  // Update Online Users List on Socket Connection
   useEffect(() => {
     if (socket && loggedInUser) {
       socket.emit("userConnected", loggedInUser._id);
@@ -55,11 +72,13 @@ const UserContextProvider = ({ children }) => {
         socket.off("getOnlineUsers");
       };
     }
-  }, [socket, loggedInUser]);
+  }, [socket]);
 
   return (
     <UserContext.Provider
       value={{
+        accessToken,
+        setAccessToken,
         loggedInUser,
         setLoggedInUser,
         activeConversationUser,

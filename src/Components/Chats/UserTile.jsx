@@ -16,7 +16,7 @@ export const UserTile = ({ user }) => {
     <UserTileContainer>
       <LeftContainer>{user.fullname[0]}</LeftContainer>
       <MiddleContainer>
-        {/* <h3>{user.email}</h3> */}
+        <h3>{user.email}</h3>
         <p>{user.fullname}</p>
       </MiddleContainer>
 

@@ -14,18 +14,22 @@ import {
 } from "../../Styles/Components/Chats/SideDrawer";
 import UserContext from "../../Context/UserContext";
 import { PrimaryButton } from "../../Styles/Common";
+import useAxios from "../../Utils/useAxios";
+import MyContext from "../../Context/MyContext";
 
 export const SideDrawer = (props) => {
+  const api = useAxios();
   const { loggedInUser } = useContext(UserContext);
   const sideDrawerRef = useRef(null);
+  const { showToastMessage } = useContext(MyContext);
 
   const [fullname, setFullname] = useState(loggedInUser?.fullname);
-  const [bio, setBio] = useState(loggedInUser?.bio);
+  const [bio, setBio] = useState(loggedInUser?.profileInfo?.bio);
   const [email, setEmail] = useState(loggedInUser?.email);
 
   useEffect(() => {
     setFullname(loggedInUser?.fullname);
-    setBio(loggedInUser?.bio);
+    setBio(loggedInUser?.profileInfo?.bio);
     setEmail(loggedInUser?.email);
   }, [loggedInUser]);
 
@@ -38,20 +42,33 @@ export const SideDrawer = (props) => {
   };
 
   const handleBioEditClick = (e) => {
-    setBio(loggedInUser?.bio);
+    setBio(loggedInUser?.profileInfo?.bio);
     setIsBioEdit(!isBioEdit);
   };
 
-  const handleFullNameSave = (e) => {
-    // Save the fullname to the database
-    setIsFullNameEdit(false);
-    localStorage.setItem("user", JSON.stringify({ ...loggedInUser, fullname }));
+  const handleFullNameSave = async (e) => {
+    try {
+      await api.put(`/user/updateuserinfo`, { fullname });
+      setIsFullNameEdit(false);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...loggedInUser, fullname })
+      );
+    } catch (err) {
+      showToastMessage("Error", "Error while updating fullname");
+      console.log(err);
+    }
   };
 
-  const handleBioSave = (e) => {
-    // Save the bio to the database
-    setIsBioEdit(false);
-    localStorage.setItem("user", JSON.stringify({ ...loggedInUser, bio }));
+  const handleBioSave = async (e) => {
+    try {
+      await api.put(`/user/updateuserinfo`, { bio });
+      setIsBioEdit(false);
+      localStorage.setItem("user", JSON.stringify({ ...loggedInUser, bio }));
+    } catch (err) {
+      showToastMessage("Error", "Error while updating bio");
+      console.log(err);
+    }
   };
 
   // When the side drawer is opened, reset the scrollTop to 0
