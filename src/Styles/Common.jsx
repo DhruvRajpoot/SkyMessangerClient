@@ -26,7 +26,7 @@ export const PrimaryButton = styled.button`
   }
 
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
   }
 
   &:disabled {
@@ -56,7 +56,7 @@ export const SecondaryButton = styled.button`
   }
 
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
   }
 
   &:disabled {

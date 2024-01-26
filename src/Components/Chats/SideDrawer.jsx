@@ -19,7 +19,7 @@ import MyContext from "../../Context/MyContext";
 
 export const SideDrawer = (props) => {
   const api = useAxios();
-  const { loggedInUser } = useContext(UserContext);
+  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const sideDrawerRef = useRef(null);
   const { showToastMessage } = useContext(MyContext);
 
@@ -50,10 +50,14 @@ export const SideDrawer = (props) => {
     try {
       await api.put(`/user/updateuserinfo`, { fullname });
       setIsFullNameEdit(false);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...loggedInUser, fullname })
-      );
+
+      const updatedUser = {
+        ...loggedInUser,
+        fullname: fullname,
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setLoggedInUser(updatedUser);
     } catch (err) {
       showToastMessage("Error", "Error while updating fullname");
       console.log(err);
@@ -64,7 +68,17 @@ export const SideDrawer = (props) => {
     try {
       await api.put(`/user/updateuserinfo`, { bio });
       setIsBioEdit(false);
-      localStorage.setItem("user", JSON.stringify({ ...loggedInUser, bio }));
+
+      const updatedUser = {
+        ...loggedInUser,
+        profileInfo: {
+          ...loggedInUser.profileInfo,
+          bio: bio,
+        },
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setLoggedInUser(updatedUser);
     } catch (err) {
       showToastMessage("Error", "Error while updating bio");
       console.log(err);
@@ -109,9 +123,11 @@ export const SideDrawer = (props) => {
 
           {isFullNameEdit && fullname !== loggedInUser?.fullname && (
             <PrimaryButton
-              fontsize={".9rem"}
-              width={"80px"}
-              margin={"0 0 0 auto"}
+              style={{
+                fontSize: ".9rem",
+                width: "80px",
+                margin: "0 0 0 auto",
+              }}
               onClick={handleFullNameSave}
             >
               Save
@@ -138,9 +154,11 @@ export const SideDrawer = (props) => {
 
           {isBioEdit && bio !== loggedInUser?.bio && (
             <PrimaryButton
-              fontsize={".9rem"}
-              width={"80px"}
-              margin={"0 0 0 auto"}
+              style={{
+                fontSize: ".9rem",
+                width: "80px",
+                margin: "0 0 0 auto",
+              }}
               onClick={handleBioSave}
             >
               Save
