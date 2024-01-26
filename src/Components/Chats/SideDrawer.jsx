@@ -110,7 +110,7 @@ export const SideDrawer = (props) => {
             <Input
               type="text"
               name="fullname"
-              value={fullname}
+              value={fullname || ""}
               readOnly={!isFullNameEdit}
               onChange={(e) => setFullname(e.target.value)}
               iseditable={isFullNameEdit.toString()}
@@ -141,7 +141,7 @@ export const SideDrawer = (props) => {
             <Input
               type="text"
               name="bio"
-              value={bio}
+              value={bio || ""}
               readOnly={!isBioEdit}
               onChange={(e) => setBio(e.target.value)}
               iseditable={isBioEdit.toString()}
@@ -168,7 +168,7 @@ export const SideDrawer = (props) => {
 
         <ProfileTextContainer>
           <Label>Email</Label>
-          <Input type="text" value={email} readOnly />
+          <Input type="text" value={email || ""} readOnly />
           <br />
         </ProfileTextContainer>
       </SideDrawerWrapper>
