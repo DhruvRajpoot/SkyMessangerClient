@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
+  DefaultProfilePic,
   ProfilePic,
   ProfilePicContainer,
   ProfilePicHover,
@@ -33,7 +34,11 @@ export const ProfilePicComponent = () => {
 
   return (
     <ProfilePicContainer>
-      <ProfilePic src={loggedInUser?.profileInfo?.pic} />
+      {loggedInUser?.profileInfo?.pic !== null ? (
+        <ProfilePic src={loggedInUser?.profileInfo?.pic} />
+      ) : (
+        <DefaultProfilePic>{loggedInUser?.fullname[0]}</DefaultProfilePic>
+      )}
       <ProfilePicHover
         onClick={() => {
           setIsMenuOpen(!isMenuOpen);

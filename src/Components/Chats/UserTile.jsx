@@ -16,7 +16,11 @@ export const UserTile = ({ user }) => {
   return (
     <UserTileContainer>
       <LeftContainer>
-        <ProfilePic src={user?.profileInfo?.pic} />
+        {user?.profileInfo?.pic !== null ? (
+          <ProfilePic src={user?.profileInfo?.pic} />
+        ) : (
+          user?.fullname[0]
+        )}
       </LeftContainer>
       <MiddleContainer>
         <h3>{user?.email}</h3>

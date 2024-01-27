@@ -15,6 +15,7 @@ export const LeftContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.5rem;
 `;
 
 export const MiddleContainer = styled.div`
@@ -33,5 +34,6 @@ export const OnlineIndicator = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${(props) => (props.useronline == "true" ? "#01e901" : "#de0404")};
+  background: ${(props) =>
+    props.useronline == "true" ? "#01e901" : "#de0404"};
 `;

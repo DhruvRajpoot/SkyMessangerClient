@@ -1,4 +1,7 @@
 import { createContext, useEffect, useState } from "react";
+import { SERVER_URL } from "../Config/Baseurl";
+import { getRefreshTokenFromCookie } from "../Utils/useAxios";
+import { jwtDecode } from "jwt-decode";
 
 const MyContext = createContext();
 
@@ -17,6 +20,36 @@ const MyContextProvider = ({ children }) => {
     setTimeout(() => {
       setShowToast(false);
     }, 3000);
+  };
+
+  // Get access token from refresh token
+  const getAccessTokenFromRefreshToken = async () => {
+    try {
+      const refreshToken = getRefreshTokenFromCookie();
+
+      const refreshTokenNotValid = () => {
+        if (!refreshToken) return true;
+        const decoded = jwtDecode(refreshToken);
+        const isExpired = decoded.exp * 1000 < Date.now();
+        return isExpired;
+      };
+
+      if (refreshTokenNotValid) {
+        showToastMessage("Error", "Please Login Again");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      }
+
+      const response = await axios.post(`${SERVER_URL}/auth/getaccesstoken`, {
+        refreshToken: refreshToken,
+      });
+
+      localStorage.setItem("accessToken", response.data.accessToken);
+      return response.data.accessToken;
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   // Handle Error
@@ -38,6 +71,10 @@ const MyContextProvider = ({ children }) => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("user");
           window.location.href = "/login";
+          break;
+
+        case "jwt expired":
+          getAccessTokenFromRefreshToken();
           break;
 
         default:

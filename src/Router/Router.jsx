@@ -6,6 +6,7 @@ import { Login } from "../Pages/Login";
 import { Chats } from "../Pages/Chats";
 import MyContext from "../Context/MyContext";
 import { Toast } from "../Components/Toast";
+import { Error404 } from "../Pages/Error404";
 
 export const Router = () => {
   const { showToast } = useContext(MyContext);
@@ -17,6 +18,7 @@ export const Router = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/chats" element={<Chats />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
       {showToast && <Toast />}
     </BrowserRouter>

@@ -15,6 +15,8 @@ import {
 import { formateDate, formateDateAndTime } from "../../Utils/common";
 import axios from "axios";
 import { SERVER_URL } from "../../Config/Baseurl";
+import { Loading } from "../Loading/Loading";
+import { ProfilePic } from "../../Styles/Components/Chats/ProfilePicComponent";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -23,6 +25,7 @@ export const ChatWindow = () => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
 
   let typingTimeout = null;
   const [isTyping, setIsTyping] = useState(false);
@@ -77,10 +80,12 @@ export const ChatWindow = () => {
 
   // Function to call fetchConversationId and fetchMessages
   const fetchConversationIdAndMessages = async () => {
+    setShowLoading(true);
     let tempConversationId = await fetchConversationId();
     if (tempConversationId !== null) {
       fetchMessages(tempConversationId);
     }
+    setShowLoading(false);
   };
 
   // Effect runs when activeConversationUser changes
@@ -217,7 +222,13 @@ export const ChatWindow = () => {
   return (
     <ChatWindowContainer>
       <Header>
-        <LeftContainer>{activeConversationUser.fullname[0]}</LeftContainer>
+        <LeftContainer>
+          {activeConversationUser?.profileInfo?.pic !== null ? (
+            <ProfilePic src={activeConversationUser?.profileInfo?.pic} />
+          ) : (
+            activeConversationUser?.fullname[0]
+          )}
+        </LeftContainer>
         <MiddleContainer>
           <h3>{activeConversationUser.email}</h3>
           <h3>{activeConversationUser.fullname}</h3>
@@ -233,18 +244,25 @@ export const ChatWindow = () => {
         <RightContainer>menu {/* Menu Icon */}</RightContainer>
       </Header>
 
-      <MessageContainer>
-        {allMessages.map((message, index) => (
-          <div key={message._id}>
-            {showDateOnChange(message, index) && (
-              <DateBlock>{formateDate(message.createdAt)}</DateBlock>
-            )}
-            <Message message={message} />
-          </div>
-        ))}
-        <div ref={autoScrollRef} />
-      </MessageContainer>
-
+      {showLoading ? (
+        <Loading />
+      ) : (
+        <MessageContainer>
+          {allMessages.length !== 0 ? (
+            allMessages.map((message, index) => (
+              <div key={message._id}>
+                {showDateOnChange(message, index) && (
+                  <DateBlock>{formateDate(message.createdAt)}</DateBlock>
+                )}
+                <Message message={message} />
+              </div>
+            ))
+          ) : (
+            <p>No messages</p>
+          )}
+          <div ref={autoScrollRef} />
+        </MessageContainer>
+      )}
       <Footer
         message={message}
         setMessage={setMessage}

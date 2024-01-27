@@ -38,13 +38,23 @@ export const RightContainer = styled.div`
   width: 100%;
 `;
 
+export const ProfilePicContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid black;
+  cursor: pointer;
+`;
+
 export const ProfilePic = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid black;
-  cursor: pointer;
 `;
 
 export const Title = styled.h1`
@@ -55,4 +65,5 @@ export const UsersList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 100%;
 `;

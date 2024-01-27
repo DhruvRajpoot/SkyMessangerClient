@@ -11,6 +11,7 @@ import {
   ChatWrapper,
   LeftContainer,
   ProfilePic,
+  ProfilePicContainer,
   RightContainer,
   Sidebar,
   Title,
@@ -18,6 +19,7 @@ import {
 } from "../Styles/Pages/Chats";
 import { SideDrawer } from "../Components/Chats/SideDrawer";
 import MyContext from "../Context/MyContext";
+import { Loading } from "../Components/Loading/Loading";
 
 export const Chats = () => {
   const api = useAxios();
@@ -81,10 +83,13 @@ export const Chats = () => {
         <ChatWrapper>
           {/* Sidebar to show additional info */}
           <Sidebar>
-            <ProfilePic
-              src={loggedInUser?.profileInfo?.pic}
-              onClick={toggleSideDrawer}
-            />
+            <ProfilePicContainer onClick={toggleSideDrawer}>
+              {loggedInUser?.profileInfo?.pic !== null ? (
+                <ProfilePic src={loggedInUser?.profileInfo?.pic} />
+              ) : (
+                loggedInUser?.fullname[0]
+              )}
+            </ProfilePicContainer>
 
             <SideDrawer
               toggleSideDrawer={toggleSideDrawer}
@@ -97,7 +102,7 @@ export const Chats = () => {
             <Title>Chats</Title>
 
             <UsersList>
-              {loggedInUser &&
+              {loggedInUser ? (
                 users.map(
                   (user) =>
                     user._id !== loggedInUser._id && (
@@ -110,7 +115,10 @@ export const Chats = () => {
                         <UserTile user={user} />
                       </div>
                     )
-                )}
+                )
+              ) : (
+                <Loading />
+              )}
             </UsersList>
           </LeftContainer>
 

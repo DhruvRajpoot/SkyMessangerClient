@@ -19,6 +19,7 @@ export const LeftContainer = styled.div`
   align-items: center;
   width: 50px;
   height: 50px;
+  font-size: 1.5rem;
   border-radius: 50%;
   background-color: gray;
 `;

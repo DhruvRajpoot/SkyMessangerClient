@@ -32,6 +32,17 @@ export const ProfilePicHover = styled.div`
   }
 `;
 
+export const DefaultProfilePic = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+`;
+
 export const ProfilePic = styled.img`
   width: 100%;
   height: 100%;

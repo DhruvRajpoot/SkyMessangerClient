@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { SERVER_URL } from "../Config/Baseurl";
 import { useNavigate } from "react-router-dom";
 
-const getRefreshTokenFromCookie = () => {
+export const getRefreshTokenFromCookie = () => {
   const cookies = document.cookie.split(";");
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();
@@ -40,6 +40,7 @@ const useAxios = () => {
       const response = await axios.post(`${SERVER_URL}/auth/getaccesstoken`, {
         refreshToken: refreshToken,
       });
+
       localStorage.setItem("accessToken", response.data.accessToken);
       req.headers.Authorization = `Bearer ${response.data.accessToken}`;
       return req;
