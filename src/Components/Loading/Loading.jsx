@@ -1,7 +1,8 @@
 import React from "react";
 import Lottie from "react-lottie";
-import LoadingData from "../../Assets/Loading/Loading.json";
 import styled from "styled-components";
+import LoadingData from "../../Assets/Loading/Loading.json";
+import LoadingData2 from "../../Assets/Loading/Typing.json";
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -12,10 +13,19 @@ const LoadingContainer = styled.div`
 `;
 
 export const Loading = (props) => {
+  const getAnimationData = () => {
+    switch (props.type) {
+      case "typing":
+        return LoadingData2;
+      default:
+        return LoadingData;
+    }
+  };
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: LoadingData,
+    animationData: getAnimationData(),
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },

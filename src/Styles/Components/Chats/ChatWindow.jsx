@@ -42,7 +42,7 @@ export const MessageContainer = styled.div`
   overflow-y: scroll;
   gap: 1rem;
   height: 100%;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.5rem 0 0.5rem;
 `;
 
 export const DateBlock = styled.div`
@@ -55,4 +55,10 @@ export const DateBlock = styled.div`
   border-radius: 0.5rem;
   background-color: #dffca3;
   margin-bottom: 1rem;
+`;
+
+export const TypingLoader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: fit-content;
 `;

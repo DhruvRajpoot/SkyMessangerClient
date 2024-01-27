@@ -11,6 +11,7 @@ import {
   MessageContainer,
   MiddleContainer,
   RightContainer,
+  TypingLoader,
 } from "../../Styles/Components/Chats/ChatWindow";
 import { formateDate, formateDateAndTime } from "../../Utils/common";
 import axios from "axios";
@@ -244,32 +245,41 @@ export const ChatWindow = () => {
         <RightContainer>menu {/* Menu Icon */}</RightContainer>
       </Header>
 
-      {showLoading ? (
-        <Loading />
-      ) : (
-        <MessageContainer>
-          {allMessages.length !== 0 ? (
-            allMessages.map((message, index) => (
-              <div key={message._id}>
-                {showDateOnChange(message, index) && (
-                  <DateBlock>{formateDate(message.createdAt)}</DateBlock>
-                )}
-                <Message message={message} />
-              </div>
-            ))
-          ) : (
-            <p>No messages</p>
-          )}
-          <div ref={autoScrollRef} />
-        </MessageContainer>
-      )}
+      <MessageContainer>
+        {showLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {allMessages.length !== 0 ? (
+              allMessages.map((message, index) => (
+                <div key={message._id}>
+                  {showDateOnChange(message, index) && (
+                    <DateBlock>{formateDate(message.createdAt)}</DateBlock>
+                  )}
+                  <Message message={message} />
+                </div>
+              ))
+            ) : (
+              <p>No messages</p>
+            )}
+          </>
+        )}
+
+        {isTyping && (
+          <TypingLoader>
+            <Loading type="typing" width={100} height={50} />
+          </TypingLoader>
+        )}
+
+        <div ref={autoScrollRef} style={{ height: "0px", margin: "0px" }} />
+      </MessageContainer>
+
       <Footer
         message={message}
         setMessage={setMessage}
         handleMessageSend={handleMessageSend}
         handleTyping={handleTyping}
       />
-      {isTyping && <div>typing...</div>}
     </ChatWindowContainer>
   );
 };
