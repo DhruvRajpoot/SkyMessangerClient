@@ -256,7 +256,7 @@ export const ChatWindow = () => {
                   {showDateOnChange(message, index) && (
                     <DateBlock>{formateDate(message.createdAt)}</DateBlock>
                   )}
-                  <Message message={message} />
+                  <Message message={message} allMessages={allMessages} />
                 </div>
               ))
             ) : (
@@ -267,7 +267,7 @@ export const ChatWindow = () => {
 
         {isTyping && (
           <TypingLoader>
-            <Loading type="typing" width={100} height={50} />
+            <Loading type="typing" width={80} height={40} />
           </TypingLoader>
         )}
 

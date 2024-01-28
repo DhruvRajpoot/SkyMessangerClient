@@ -61,4 +61,5 @@ export const TypingLoader = styled.div`
   display: flex;
   justify-content: flex-start;
   width: fit-content;
+  height: fit-content;
 `;
