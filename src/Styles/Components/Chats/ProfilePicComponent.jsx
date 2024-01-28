@@ -60,7 +60,7 @@ export const ProfilePicMenu = styled.div`
   background: white;
   border-radius: 5px;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
-  display: ${({ isMenuOpen }) => (isMenuOpen ? "flex" : "none")};
+  display: ${({ ismenuopen }) => (ismenuopen === "true" ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
   padding: 5px;

@@ -56,7 +56,7 @@ export const ProfilePicComponent = () => {
         <MdAddPhotoAlternate />
       </ProfilePicHover>
 
-      <ProfilePicMenu isMenuOpen={isMenuOpen} ref={profilePicMenuRef}>
+      <ProfilePicMenu ismenuopen={isMenuOpen.toString()} ref={profilePicMenuRef}>
         <ProfilePicMenuItem onClick={handleViewProfile}>
           <MdRemoveRedEye />
           <span>View image</span>
