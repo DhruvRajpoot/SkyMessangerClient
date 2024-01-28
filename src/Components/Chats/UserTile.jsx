@@ -8,6 +8,7 @@ import {
   RightContainer,
 } from "../../Styles/Components/Chats/UserTile";
 import { ProfilePic } from "../../Styles/Pages/Chats";
+import LazyLoad from "react-lazy-load";
 
 export const UserTile = ({ user }) => {
   const { onlineUsers } = useContext(UserContext);
@@ -17,7 +18,9 @@ export const UserTile = ({ user }) => {
     <UserTileContainer>
       <LeftContainer>
         {user?.profileInfo?.pic !== null ? (
-          <ProfilePic src={user?.profileInfo?.pic} />
+          <LazyLoad offset={100} debounce={false} throttle={250}>
+            <ProfilePic src={user?.profileInfo?.pic} />
+          </LazyLoad>
         ) : (
           user?.fullname[0]
         )}
