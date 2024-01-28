@@ -15,6 +15,7 @@ import useAxios from "../../Utils/useAxios";
 import MyContext from "../../Context/MyContext";
 import { MdEdit, MdOutlineCancel } from "react-icons/md";
 import { ProfilePicComponent } from "./ProfilePicComponent";
+import useOutsideClick from "../../Utils/useOutsideClick";
 
 export const SideDrawer = (props) => {
   const api = useAxios();
@@ -91,10 +92,18 @@ export const SideDrawer = (props) => {
     }
   }, [props.isOpen]);
 
+  // Close the side drawer when clicked outside
+  useOutsideClick(
+    sideDrawerRef,
+    () => props.setIsOpen(false),
+    props.excludeRefs
+  );
+
   return (
     <SideDrawerContainer isopen={props.isOpen.toString()} ref={sideDrawerRef}>
       <SideDrawerWrapper>
         <Heading>My account</Heading>
+
         <ProfilePicComponent />
 
         <ProfileTextContainer>

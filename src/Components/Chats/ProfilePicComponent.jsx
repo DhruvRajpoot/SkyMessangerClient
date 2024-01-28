@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   DefaultProfilePic,
   ProfilePic,
@@ -15,10 +15,13 @@ import {
   MdRemoveRedEye,
 } from "react-icons/md";
 import UserContext from "../../Context/UserContext";
+import useOutsideClick from "../../Utils/useOutsideClick";
 
 export const ProfilePicComponent = () => {
   const { loggedInUser } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const profilePicHoverRef = useRef(null);
+  const profilePicMenuRef = useRef(null);
 
   const handleViewProfile = () => {
     setIsMenuOpen(false);
@@ -32,6 +35,11 @@ export const ProfilePicComponent = () => {
     setIsMenuOpen(false);
   };
 
+  // close profile pic menu on outside click
+  useOutsideClick(profilePicMenuRef, () => setIsMenuOpen(false), [
+    profilePicHoverRef,
+  ]);
+
   return (
     <ProfilePicContainer>
       {loggedInUser?.profileInfo?.pic !== null ? (
@@ -43,11 +51,12 @@ export const ProfilePicComponent = () => {
         onClick={() => {
           setIsMenuOpen(!isMenuOpen);
         }}
+        ref={profilePicHoverRef}
       >
         <MdAddPhotoAlternate />
       </ProfilePicHover>
 
-      <ProfilePicMenu isMenuOpen={isMenuOpen}>
+      <ProfilePicMenu isMenuOpen={isMenuOpen} ref={profilePicMenuRef}>
         <ProfilePicMenuItem onClick={handleViewProfile}>
           <MdRemoveRedEye />
           <span>View image</span>

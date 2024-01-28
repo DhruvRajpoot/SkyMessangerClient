@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../Context/UserContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAxios from "../Utils/useAxios";
@@ -37,6 +37,7 @@ export const Chats = () => {
   const [users, setUsers] = useState([]);
 
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+  const profilePicContainerRef = useRef(null);
 
   const toggleSideDrawer = () => {
     setIsSideDrawerOpen(!isSideDrawerOpen);
@@ -83,7 +84,10 @@ export const Chats = () => {
         <ChatWrapper>
           {/* Sidebar to show additional info */}
           <Sidebar>
-            <ProfilePicContainer onClick={toggleSideDrawer}>
+            <ProfilePicContainer
+              onClick={toggleSideDrawer}
+              ref={profilePicContainerRef}
+            >
               {loggedInUser?.profileInfo?.pic !== null ? (
                 <ProfilePic src={loggedInUser?.profileInfo?.pic} />
               ) : (
@@ -94,6 +98,8 @@ export const Chats = () => {
             <SideDrawer
               toggleSideDrawer={toggleSideDrawer}
               isOpen={isSideDrawerOpen}
+              setIsOpen={setIsSideDrawerOpen}
+              excludeRefs={[profilePicContainerRef]}
             />
           </Sidebar>
 
