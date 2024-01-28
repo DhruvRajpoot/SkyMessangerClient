@@ -7,7 +7,6 @@ import {
   OnlineIndicator,
   RightContainer,
 } from "../../Styles/Components/Chats/UserTile";
-import { ProfilePic } from "../../Styles/Pages/Chats";
 import LazyLoad from "react-lazy-load";
 
 export const UserTile = ({ user }) => {
@@ -19,7 +18,7 @@ export const UserTile = ({ user }) => {
       <LeftContainer>
         {user?.profileInfo?.pic !== null ? (
           <LazyLoad offset={100} debounce={false} throttle={250}>
-            <ProfilePic src={user?.profileInfo?.pic} />
+            <img src={user?.profileInfo?.pic} />
           </LazyLoad>
         ) : (
           user?.fullname[0]

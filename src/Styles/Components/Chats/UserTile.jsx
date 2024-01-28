@@ -5,6 +5,10 @@ export const UserTileContainer = styled.div`
   gap: 0.5rem;
   border: 1px solid black;
   background-color: #c2c2c2;
+
+  &:hover {
+    background-color: #a2a2a2;
+  }
 `;
 
 export const LeftContainer = styled.div`
@@ -16,6 +20,12 @@ export const LeftContainer = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+
+  * {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
 `;
 
 export const MiddleContainer = styled.div`
