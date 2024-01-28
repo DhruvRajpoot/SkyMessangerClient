@@ -6,11 +6,12 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         font-family: 'Roboto', sans-serif;
         box-sizing: border-box;
+        user-select: none;
     }
 
     ::-webkit-scrollbar {
         width: 4px;
-        height: 0px;
+        height: 4px;
     }
     
     ::-webkit-scrollbar-track {
