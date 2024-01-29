@@ -36,7 +36,7 @@ export const ProfilePicComponent = () => {
   };
 
   // close profile pic menu on outside click
-  useOutsideClick(profilePicMenuRef, () => setIsMenuOpen(false), [
+  useOutsideClick(profilePicMenuRef, () => setIsMenuOpen(false), isMenuOpen, [
     profilePicHoverRef,
   ]);
 
@@ -56,7 +56,10 @@ export const ProfilePicComponent = () => {
         <MdAddPhotoAlternate />
       </ProfilePicHover>
 
-      <ProfilePicMenu ismenuopen={isMenuOpen.toString()} ref={profilePicMenuRef}>
+      <ProfilePicMenu
+        ismenuopen={isMenuOpen.toString()}
+        ref={profilePicMenuRef}
+      >
         <ProfilePicMenuItem onClick={handleViewProfile}>
           <MdRemoveRedEye />
           <span>View image</span>

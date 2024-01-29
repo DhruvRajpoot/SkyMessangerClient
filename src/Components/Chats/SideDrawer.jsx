@@ -39,11 +39,13 @@ export const SideDrawer = (props) => {
   const handleFullNameEditClick = (e) => {
     setFullname(loggedInUser?.fullname);
     setIsFullNameEdit(!isFullNameEdit);
+    e.stopPropagation();
   };
 
   const handleBioEditClick = (e) => {
     setBio(loggedInUser?.profileInfo?.bio);
     setIsBioEdit(!isBioEdit);
+    e.stopPropagation();
   };
 
   const handleFullNameSave = async (e) => {
@@ -96,6 +98,7 @@ export const SideDrawer = (props) => {
   useOutsideClick(
     sideDrawerRef,
     () => props.setIsOpen(false),
+    props.isOpen,
     props.excludeRefs
   );
 

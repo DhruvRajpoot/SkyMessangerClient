@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react";
 
-const useOutsideClick = (ref, onOutsideClick, excludeRefs = []) => {
+const useOutsideClick = (
+  ref,
+  onOutsideClick,
+  condition = true,
+  excludeRefs = []
+) => {
   const savedCallback = useRef(onOutsideClick);
 
   useEffect(() => {
@@ -14,17 +19,26 @@ const useOutsideClick = (ref, onOutsideClick, excludeRefs = []) => {
           excludeRef.current && excludeRef.current.contains(event.target)
       );
 
-      if (!isExcluded && ref.current && !ref.current.contains(event.target)) {
+      if (
+        condition &&
+        !isExcluded &&
+        ref.current &&
+        !ref.current.contains(event.target)
+      ) {
         savedCallback.current();
       }
     };
 
-    document.addEventListener("click", handleClick);
+    if (condition) {
+      document.addEventListener("click", handleClick);
+    }
 
     return () => {
-      document.removeEventListener("click", handleClick);
+      if (condition) {
+        document.removeEventListener("click", handleClick);
+      }
     };
-  }, [ref, excludeRefs]);
+  }, [ref, condition, excludeRefs]);
 };
 
 export default useOutsideClick;

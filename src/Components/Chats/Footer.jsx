@@ -28,6 +28,7 @@ export const Footer = ({
       console.log("Clicked outside picker");
       setShowEmojiPicker(false);
     },
+    showEmojiPicker,
     [EmojiButtonRef]
   );
 
