@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { SERVER_URL } from "../Config/Baseurl";
 import { getRefreshTokenFromCookie } from "../Utils/useAxios";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const MyContext = createContext();
 
@@ -46,6 +47,7 @@ const MyContextProvider = ({ children }) => {
       });
 
       localStorage.setItem("accessToken", response.data.accessToken);
+      setAccessToken(response.data.accessToken);
       return response.data.accessToken;
     } catch (err) {
       handleError(err);
@@ -62,7 +64,6 @@ const MyContextProvider = ({ children }) => {
         "Network Error, Please check your internet connection"
       );
     } else if (err.response) {
-      // Request made and server responded
       switch (err.response.data.message) {
         case "invalid token":
         case "invalid signature":
@@ -82,10 +83,8 @@ const MyContextProvider = ({ children }) => {
           break;
       }
     } else if (err.request) {
-      // The request was made but no response was received
       showToastMessage("Error", "Server is not responding");
     } else {
-      // Something happened in setting up the request that triggered an Error
       showToastMessage("Error", err.message);
     }
   };

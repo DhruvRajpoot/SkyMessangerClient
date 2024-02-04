@@ -18,15 +18,10 @@ export const PrimaryButton = styled.button`
   margin: ${(props) => props.margin || "0"};
   border: none;
   border-radius: 10px;
-  transition: all 0.15s ease-in-out;
   cursor: pointer;
 
   &:hover {
     background-color: ${SecondaryColor};
-  }
-
-  &:active {
-    transform: scale(0.96);
   }
 
   &:disabled {

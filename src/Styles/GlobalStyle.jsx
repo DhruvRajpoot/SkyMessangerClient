@@ -26,6 +26,15 @@ const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar-thumb:hover {
         background-color: #252525;
     }
+
+    button{
+        transition: all 0.15s ease-out;
+        cursor: pointer;
+
+        &:active{
+            transform: scale(0.96);
+        }
+    }
 `;
 
 export default GlobalStyle;
