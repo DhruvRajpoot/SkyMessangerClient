@@ -66,9 +66,12 @@ export const ProfilePicComponent = () => {
   };
 
   // Upload profile pic to the server
-  const uploadProfilePicToServer = async (pic) => {
+  const uploadProfilePicToServer = async (pic, oldPic) => {
     try {
-      const response = await api.put(`/user/updateprofilepic`, { pic: pic });
+      const response = await api.put(`/user/updateprofilepic`, {
+        pic: pic,
+        oldPic: oldPic,
+      });
 
       if (response.status === 200) {
         updateProfilePicOnApp(response.data.pic);
@@ -108,7 +111,7 @@ export const ProfilePicComponent = () => {
 
       const high_res_url = data.secure_url;
 
-      await uploadProfilePicToServer(high_res_url);
+      await uploadProfilePicToServer(high_res_url, profilePic);
 
       setSelectedPic(null);
     } catch (err) {
@@ -124,7 +127,7 @@ export const ProfilePicComponent = () => {
     setIsMenuOpen(false);
     setLoading(true);
 
-    await uploadProfilePicToServer(null);
+    await uploadProfilePicToServer(null, profilePic);
 
     setLoading(false);
   };
