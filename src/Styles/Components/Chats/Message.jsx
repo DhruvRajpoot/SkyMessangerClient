@@ -6,6 +6,17 @@ export const MessageContainer = styled.div`
   align-items: center;
 `;
 
+export const ProfilePicContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  background: #97e3d7;
+`;
+
 export const ProfilePic = styled.img`
   width: 35px;
   height: 35px;

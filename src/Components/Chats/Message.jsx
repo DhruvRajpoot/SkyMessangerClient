@@ -5,6 +5,7 @@ import {
   MessageContainer,
   MessageWrapper,
   ProfilePic,
+  ProfilePicContainer,
 } from "../../Styles/Components/Chats/Message";
 
 export const Message = ({ message, allMessages }) => {
@@ -24,10 +25,16 @@ export const Message = ({ message, allMessages }) => {
   return (
     <MessageContainer>
       {showProfile() && (
-        <ProfilePic
-          src={activeConversationUser.profileInfo.pic}
-          alt={activeConversationUser.fullname}
-        />
+        <ProfilePicContainer>
+          {activeConversationUser.profileInfo.pic ? (
+            <ProfilePic
+              src={activeConversationUser.profileInfo.pic}
+              alt={activeConversationUser.fullname}
+            />
+          ) : (
+            activeConversationUser.fullname[0]
+          )}
+        </ProfilePicContainer>
       )}
 
       <MessageWrapper msgbyme={msgByMe} showprofile={showProfile().toString()}>
