@@ -22,6 +22,15 @@ export const Message = ({ message, allMessages }) => {
     return false;
   };
 
+  const renderMessage = () => {
+    switch (message.messageType) {
+      case "image":
+        return <img src={message.message} alt="chat-img" />;
+      default:
+        return <p>{message.message}</p>;
+    }
+  };
+
   return (
     <MessageContainer>
       {showProfile() && (
@@ -38,7 +47,7 @@ export const Message = ({ message, allMessages }) => {
       )}
 
       <MessageWrapper msgbyme={msgByMe} showprofile={showProfile().toString()}>
-        <p>{message.message}</p>
+        {renderMessage()}
         <small>{formateTime(message.createdAt)}</small>
       </MessageWrapper>
     </MessageContainer>

@@ -36,6 +36,7 @@ export const LeftContainer = styled.div`
 export const RightContainer = styled.div`
   background: #979797;
   width: 100%;
+  max-width: calc(100% - 460px);
 `;
 
 export const ProfilePicContainer = styled.div`

@@ -15,6 +15,10 @@ export const ProfilePicContainer = styled.div`
   font-size: 1.2rem;
   border-radius: 50%;
   background: #97e3d7;
+
+  * {
+    user-select: none;
+  }
 `;
 
 export const ProfilePic = styled.img`
@@ -22,6 +26,10 @@ export const ProfilePic = styled.img`
   height: 35px;
   border-radius: 50%;
   object-fit: cover;
+
+  * {
+    user-select: none;
+  }
 `;
 
 export const MessageWrapper = styled.div`
@@ -29,6 +37,9 @@ export const MessageWrapper = styled.div`
   flex-direction: column;
   gap: 3px;
   width: fit-content;
+  height: auto;
+  word-wrap: break-word;
+  max-width: 75%;
   padding: 4px 10px;
   font-size: calc(0.8rem + 0.2vw);
   border: 1px solid #dfedec;
@@ -47,7 +58,19 @@ export const MessageWrapper = styled.div`
       ? "0"
       : "45px"};
 
+  img {
+    max-width: 400px;
+    max-height: 400px;
+    background: #f1f1f1;
+    border-radius: ${(props) =>
+      props.msgbyme === "true" ? "10px 0 10px 10px" : "0 10px 10px 10px"};
+    object-fit: cover;
+    padding-bottom: 5px;
+    cursor: pointer;
+  }
+
   small {
     font-size: calc(0.5rem + 0.1vw);
+    user-select: none;
   }
 `;

@@ -109,12 +109,20 @@ export const ChatWindow = () => {
   }, [activeConversationUser]);
 
   // Handle Message Send
-  const handleMessageSend = async (e) => {
-    e.preventDefault();
+  const handleMessageSend = async (
+    message,
+    messageType = "text",
+    caption = undefined
+  ) => {
+
+    if (messageType === "text" && message === "") return;
+
     try {
       const { data } = await api.post("/messages/create", {
         conversationId: conversationId,
         message,
+        messageType,
+        caption,
       });
       setAllMessages((prev) => [...prev, data]);
       setMessage("");

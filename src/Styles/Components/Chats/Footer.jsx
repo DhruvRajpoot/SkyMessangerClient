@@ -4,7 +4,6 @@ export const Form = styled.form`
   display: flex;
   align-items: center;
   background: #b6b6b6;
-  gap: 0.5rem;
   padding: 5px 15px;
   position: relative;
 `;
@@ -28,14 +27,29 @@ export const EmojiButton = styled.div`
 export const EmojiPicker = styled.div`
   position: absolute;
   left: 5px;
-  transition: all 0.2s ease-in-out;
-  bottom: ${(props) => (props.showemojipicker === "true" ? "55px" : "0px")};
+  transition: all 0.15s ease-in-out;
+  bottom: ${(props) => (props.showemojipicker === "true" ? "60px" : "0px")};
   opacity: ${(props) => (props.showemojipicker === "true" ? "1" : "0")};
   visibility: ${(props) =>
     props.showemojipicker === "true" ? "visible" : "hidden"};
+  z-index: 149;
 `;
 
-export const Input = styled.input`
+export const AttachButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  padding: 7px;
+  margin-left: 10px;
+  color: #1c1c1c;
+  border: none;
+  position: relative;
+  cursor: pointer;
+`;
+
+export const TextInput = styled.input`
   width: 100%;
   padding: 10px;
   font-size: calc(0.9rem + 0.1vw);
