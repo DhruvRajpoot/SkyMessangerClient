@@ -7,6 +7,7 @@ import {
   ProfilePic,
   ProfilePicContainer,
 } from "../../Styles/Components/Chats/Message";
+import FullscreenView from "./FullscreenView";
 
 export const Message = ({ message, allMessages }) => {
   const { activeConversationUser } = useContext(UserContext);
@@ -25,10 +26,22 @@ export const Message = ({ message, allMessages }) => {
   const renderMessage = () => {
     switch (message.messageType) {
       case "image":
-        return <img src={message.message} alt="chat-img" />;
+        return (
+          <img
+            src={message.message}
+            alt="chat-img"
+            onClick={handleShowFullScreen}
+          />
+        );
+
       default:
         return <p>{message.message}</p>;
     }
+  };
+
+  const [showFullScreen, setShowFullScreen] = useState(false);
+  const handleShowFullScreen = () => {
+    setShowFullScreen(!showFullScreen);
   };
 
   return (
@@ -50,6 +63,16 @@ export const Message = ({ message, allMessages }) => {
         {renderMessage()}
         <small>{formateTime(message.createdAt)}</small>
       </MessageWrapper>
+
+      {message.messageType === "image" && showFullScreen && (
+        <FullscreenView
+          show={showFullScreen}
+          setShow={setShowFullScreen}
+          msgByMe={msgByMe}
+          message={message}
+          activeConversationUser={activeConversationUser}
+        />
+      )}
     </MessageContainer>
   );
 };

@@ -114,7 +114,6 @@ export const ChatWindow = () => {
     messageType = "text",
     caption = undefined
   ) => {
-
     if (messageType === "text" && message === "") return;
 
     try {
