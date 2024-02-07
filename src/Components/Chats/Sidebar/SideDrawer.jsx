@@ -8,9 +8,9 @@ import {
   ProfileTextContainer,
   InputContainer,
   EditButton,
+  SaveButton,
 } from "../../../Styles/Components/Chats/Sidebar/SideDrawer";
 import UserContext from "../../../Context/UserContext";
-import { PrimaryButton } from "../../../Styles/Common";
 import useAxios from "../../../Utils/useAxios";
 import MyContext from "../../../Context/MyContext";
 import { MdEdit, MdOutlineCancel } from "react-icons/md";
@@ -26,6 +26,9 @@ export const SideDrawer = (props) => {
   const [fullname, setFullname] = useState(loggedInUser?.fullname);
   const [bio, setBio] = useState(loggedInUser?.profileInfo?.bio);
   const [email, setEmail] = useState(loggedInUser?.email);
+
+  const fullNameContainerRef = useRef(null);
+  const bioContainerRef = useRef(null);
 
   useEffect(() => {
     setFullname(loggedInUser?.fullname);
@@ -87,6 +90,16 @@ export const SideDrawer = (props) => {
     }
   };
 
+  // Cancel the edit mode when clicked outside fullNameContainer
+  useOutsideClick(
+    fullNameContainerRef,
+    handleFullNameEditClick,
+    isFullNameEdit
+  );
+
+  // Cancel the edit mode when clicked outside bioContainer
+  useOutsideClick(bioContainerRef, handleBioEditClick, isBioEdit);
+
   // When the side drawer is opened, reset the scrollTop to 0
   useEffect(() => {
     if (props.isOpen && sideDrawerRef.current) {
@@ -103,13 +116,13 @@ export const SideDrawer = (props) => {
   );
 
   return (
-    <SideDrawerContainer isopen={props.isOpen.toString()} ref={sideDrawerRef}>
+    <SideDrawerContainer ref={sideDrawerRef}>
       <SideDrawerWrapper>
         <Heading>My account</Heading>
 
         <ProfilePicComponent />
 
-        <ProfileTextContainer>
+        <ProfileTextContainer ref={fullNameContainerRef}>
           <Label htmlFor="fullname">Full Name</Label>
           <InputContainer>
             <Input
@@ -129,21 +142,17 @@ export const SideDrawer = (props) => {
             </EditButton>
           </InputContainer>
 
-          {isFullNameEdit && fullname !== loggedInUser?.fullname && (
-            <PrimaryButton
-              style={{
-                fontSize: ".9rem",
-                width: "80px",
-                margin: "0 0 0 auto",
-              }}
+          {isFullNameEdit && (
+            <SaveButton
               onClick={handleFullNameSave}
+              disabled={fullname === loggedInUser?.fullname}
             >
               Save
-            </PrimaryButton>
+            </SaveButton>
           )}
         </ProfileTextContainer>
 
-        <ProfileTextContainer>
+        <ProfileTextContainer ref={bioContainerRef}>
           <Label htmlFor="bio">Bio</Label>
           <InputContainer>
             <Input
@@ -163,17 +172,13 @@ export const SideDrawer = (props) => {
             </EditButton>
           </InputContainer>
 
-          {isBioEdit && bio !== loggedInUser?.profileInfo?.bio && (
-            <PrimaryButton
-              style={{
-                fontSize: ".9rem",
-                width: "80px",
-                margin: "0 0 0 auto",
-              }}
+          {isBioEdit && (
+            <SaveButton
               onClick={handleBioSave}
+              disabled={bio === loggedInUser?.profileInfo?.bio}
             >
               Save
-            </PrimaryButton>
+            </SaveButton>
           )}
         </ProfileTextContainer>
 

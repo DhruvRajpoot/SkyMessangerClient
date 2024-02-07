@@ -20,12 +20,9 @@ export const PrimaryButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
 
-  &:hover {
-    background-color: ${SecondaryColor};
-  }
-
   &:disabled {
     opacity: 0.5;
+    background-color: ${SecondaryColor};
     cursor: not-allowed;
   }
 `;
@@ -45,7 +42,6 @@ export const SecondaryButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${SecondaryColor};
     border: 1px solid ${SecondaryColor};
     color: white;
   }
@@ -56,6 +52,7 @@ export const SecondaryButton = styled.button`
 
   &:disabled {
     opacity: 0.5;
+    background-color: ${SecondaryColor};
     cursor: not-allowed;
   }
 `;

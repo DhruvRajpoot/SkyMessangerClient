@@ -94,12 +94,14 @@ export const Chats = () => {
             )}
           </ProfilePicContainer>
 
-          <SideDrawer
-            toggleSideDrawer={toggleSideDrawer}
-            isOpen={isSideDrawerOpen}
-            setIsOpen={setIsSideDrawerOpen}
-            excludeRefs={[profilePicContainerRef]}
-          />
+          {isSideDrawerOpen && (
+            <SideDrawer
+              toggleSideDrawer={toggleSideDrawer}
+              isOpen={isSideDrawerOpen}
+              setIsOpen={setIsSideDrawerOpen}
+              excludeRefs={[profilePicContainerRef]}
+            />
+          )}
         </Sidebar>
 
         {/* User List to show all user */}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { PrimaryButton } from "../../../Common";
 
 export const SideDrawerContainer = styled.div`
   width: 100%;
@@ -9,11 +10,28 @@ export const SideDrawerContainer = styled.div`
   position: absolute;
   z-index: 100;
   top: 0;
-  left: ${(props) => (props.isopen === "true" ? "100%" : "-100%")};
-  opacity: ${(props) => (props.isopen === "true" ? 1 : 0)};
-  visibility: ${(props) => (props.isopen === "true" ? "visible" : "hidden")};
-  transition: all 0.2s ease-out;
   overflow-y: scroll;
+  animation: slideIn 0.2s ease-out forwards;
+
+  @keyframes slideIn {
+    0% {
+      left: -100%;
+      opacity: 0;
+      display: none;
+    }
+
+    20% {
+      left: 50%;
+      opacity: 0.5;
+      display: none;
+    }
+
+    100% {
+      left: 100%;
+      opacity: 1;
+      display: block;
+    }
+  }
 
   &::-webkit-scrollbar {
     width: 0;
@@ -39,7 +57,7 @@ export const ProfileTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: .5rem;
+  gap: 0.5rem;
 `;
 
 export const Label = styled.label`
@@ -74,8 +92,21 @@ export const EditButton = styled.button`
   cursor: pointer;
 `;
 
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-left: auto;
+export const SaveButton = styled(PrimaryButton)`
+  font-size: 0.9rem;
+  width: 80px;
+  margin: 0 0 0 auto;
+  animation: slideDown 0.2s ease-out forwards;
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-20%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `;
