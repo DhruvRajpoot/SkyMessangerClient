@@ -65,6 +65,7 @@ export const MessageWrapper = styled.div`
     border-radius: ${(props) =>
       props.msgbyme === "true" ? "10px 0 10px 10px" : "0 10px 10px 10px"};
     object-fit: cover;
+    margin-top: 3px;
     margin-bottom: 5px;
     cursor: pointer;
   }

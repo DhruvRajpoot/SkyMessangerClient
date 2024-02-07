@@ -24,6 +24,7 @@ export const UserTile = ({ user }) => {
           user?.fullname[0]
         )}
       </LeftContainer>
+
       <MiddleContainer>
         <h3>{user?.email}</h3>
         <p>{user?.fullname}</p>

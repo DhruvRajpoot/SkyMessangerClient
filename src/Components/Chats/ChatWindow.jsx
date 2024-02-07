@@ -3,21 +3,17 @@ import UserContext from "../../Context/UserContext";
 import useAxios from "../../Utils/useAxios";
 import { Message } from "./Message";
 import { Footer } from "./Footer";
+import Header from "./Header";
 import {
   ChatWindowContainer,
   DateBlock,
-  Header,
-  LeftContainer,
   MessageContainer,
-  MiddleContainer,
-  RightContainer,
   TypingLoader,
 } from "../../Styles/Components/Chats/ChatWindow";
 import { formateDate, formateDateAndTime } from "../../Utils/common";
 import axios from "axios";
 import { SERVER_URL } from "../../Config/Baseurl";
 import { Loading } from "../Loading/Loading";
-import { ProfilePic } from "../../Styles/Components/Chats/ProfilePicComponent";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -229,28 +225,10 @@ export const ChatWindow = () => {
 
   return (
     <ChatWindowContainer>
-      <Header>
-        <LeftContainer>
-          {activeConversationUser?.profileInfo?.pic !== null ? (
-            <ProfilePic src={activeConversationUser?.profileInfo?.pic} />
-          ) : (
-            activeConversationUser?.fullname[0]
-          )}
-        </LeftContainer>
-        <MiddleContainer>
-          <h3>{activeConversationUser.email}</h3>
-          <h3>{activeConversationUser.fullname}</h3>
-          <p>
-            {activeConversationUserLastSeen &&
-              (activeConversationUserLastSeen === "Online"
-                ? "Online"
-                : `Last seen ${formateDateAndTime(
-                    activeConversationUserLastSeen
-                  )}`)}
-          </p>
-        </MiddleContainer>
-        <RightContainer>menu {/* Menu Icon */}</RightContainer>
-      </Header>
+      <Header
+        activeConversationUser={activeConversationUser}
+        activeConversationUserLastSeen={activeConversationUserLastSeen}
+      />
 
       <MessageContainer>
         {showLoading ? (

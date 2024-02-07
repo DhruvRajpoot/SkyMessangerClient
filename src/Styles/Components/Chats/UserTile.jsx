@@ -26,6 +26,10 @@ export const LeftContainer = styled.div`
     height: 50px;
     border-radius: 50%;
   }
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 export const MiddleContainer = styled.div`
