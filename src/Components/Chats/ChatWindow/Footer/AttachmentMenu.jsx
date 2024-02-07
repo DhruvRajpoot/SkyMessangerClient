@@ -6,8 +6,8 @@ import { GoFileDirectoryFill } from "react-icons/go";
 import {
   AttachmentMenuContainer,
   HiddenInput,
-} from "../../Styles/Components/Chats/AttachmentMenu";
-import MyContext from "../../Context/MyContext";
+} from "../../../../Styles/Components/Chats/Footer/AttachmentMenu";
+import MyContext from "../../../../Context/MyContext";
 
 const AttachmentMenu = (props) => {
   const { showToastMessage } = useContext(MyContext);

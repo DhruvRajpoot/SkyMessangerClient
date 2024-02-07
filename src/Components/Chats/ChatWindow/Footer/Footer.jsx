@@ -6,17 +6,17 @@ import {
   Form,
   TextInput,
   SendButton,
-} from "../../Styles/Components/Chats/Footer";
+} from "../../../../Styles/Components/Chats/Footer/Footer";
 import { BsSendFill } from "react-icons/bs";
 import { MdEmojiEmotions } from "react-icons/md";
 import { ImAttachment } from "react-icons/im";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import useOutsideClick from "../../Utils/useOutsideClick";
+import useOutsideClick from "../../../../Utils/useOutsideClick";
 import AttachmentMenu from "./AttachmentMenu";
 import Preview from "./Preview";
-import { uploadFile } from "../../Utils/Cloudinary";
-import MyContext from "../../Context/MyContext";
+import { uploadFile } from "../../../../Utils/Cloudinary";
+import MyContext from "../../../../Context/MyContext";
 
 export const Footer = ({
   message,

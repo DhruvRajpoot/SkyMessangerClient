@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PrimaryColor } from "../../Common";
+import { PrimaryColor } from "../../../Common";
 
 export const ProfilePicContainer = styled.div`
   min-width: 150px;

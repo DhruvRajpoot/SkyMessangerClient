@@ -6,6 +6,7 @@ export const UserDetailsMenuContainer = styled.div`
   left: 10px;
   width: fit-content;
   height: fit-content;
+  min-width: 300px;
   max-width: 100%;
   background: #f0f0f0;
   box-shadow: 0 0 5px 0 #00000053;

@@ -8,14 +8,14 @@ import {
   ProfileTextContainer,
   InputContainer,
   EditButton,
-} from "../../Styles/Components/Chats/SideDrawer";
-import UserContext from "../../Context/UserContext";
-import { PrimaryButton } from "../../Styles/Common";
-import useAxios from "../../Utils/useAxios";
-import MyContext from "../../Context/MyContext";
+} from "../../../Styles/Components/Chats/Sidebar/SideDrawer";
+import UserContext from "../../../Context/UserContext";
+import { PrimaryButton } from "../../../Styles/Common";
+import useAxios from "../../../Utils/useAxios";
+import MyContext from "../../../Context/MyContext";
 import { MdEdit, MdOutlineCancel } from "react-icons/md";
 import { ProfilePicComponent } from "./ProfilePicComponent";
-import useOutsideClick from "../../Utils/useOutsideClick";
+import useOutsideClick from "../../../Utils/useOutsideClick";
 
 export const SideDrawer = (props) => {
   const api = useAxios();

@@ -5,12 +5,12 @@ import {
   MenuButton,
   ProfilePicContainer,
   TextDataContainer,
-} from "../../Styles/Components/Chats/Header";
-import { ProfilePic } from "../../Styles/Components/Chats/ProfilePicComponent";
-import { formateDateAndTime } from "../../Utils/common";
+} from "../../../../Styles/Components/Chats/ChatWindow/Header/Header";
+import { ProfilePic } from "../../../../Styles/Components/Chats/Sidebar/ProfilePicComponent";
+import { formateDateAndTime } from "../../../../Utils/common";
 import { RiMenu3Fill } from "react-icons/ri";
 import UserDetailsMenu from "./UserDetailsMenu";
-import FullscreenView from "./FullscreenView";
+import FullscreenView from "../../FullscreenView";
 
 const Header = (props) => {
   const { activeConversationUser, activeConversationUserLastSeen } = props;

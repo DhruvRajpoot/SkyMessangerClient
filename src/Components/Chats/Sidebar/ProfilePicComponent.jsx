@@ -10,7 +10,7 @@ import {
   UploadButton,
   CancelButton,
   LoadingContainer,
-} from "../../Styles/Components/Chats/ProfilePicComponent";
+} from "../../../Styles/Components/Chats/Sidebar/ProfilePicComponent";
 import {
   MdAddAPhoto,
   MdAddPhotoAlternate,
@@ -19,12 +19,12 @@ import {
 } from "react-icons/md";
 import { RiUploadCloud2Fill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
-import UserContext from "../../Context/UserContext";
-import useOutsideClick from "../../Utils/useOutsideClick";
-import useAxios from "../../Utils/useAxios";
-import MyContext from "../../Context/MyContext";
-import { uploadFile } from "../../Utils/Cloudinary";
-import { Loading } from "../Loading/Loading";
+import UserContext from "../../../Context/UserContext";
+import useOutsideClick from "../../../Utils/useOutsideClick";
+import useAxios from "../../../Utils/useAxios";
+import MyContext from "../../../Context/MyContext";
+import { uploadFile } from "../../../Utils/Cloudinary";
+import { Loading } from "../../Loading/Loading";
 
 export const ProfilePicComponent = () => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);

@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import UserContext from "../../Context/UserContext";
-import useAxios from "../../Utils/useAxios";
-import { Message } from "./Message";
-import { Footer } from "./Footer";
-import Header from "./Header";
+import UserContext from "../../../Context/UserContext";
+import useAxios from "../../../Utils/useAxios";
+import { Message } from "../Message";
+import { Footer } from "./Footer/Footer";
+import Header from "./Header/Header";
 import {
   ChatWindowContainer,
   DateBlock,
   MessageContainer,
   TypingLoader,
-} from "../../Styles/Components/Chats/ChatWindow";
-import { formateDate, formateDateAndTime } from "../../Utils/common";
+} from "../../../Styles/Components/Chats/ChatWindow/ChatWindow";
+import { formateDate, formateDateAndTime } from "../../../Utils/common";
 import axios from "axios";
-import { SERVER_URL } from "../../Config/Baseurl";
-import { Loading } from "../Loading/Loading";
+import { SERVER_URL } from "../../../Config/Baseurl";
+import { Loading } from "../../Loading/Loading";
 
 export const ChatWindow = () => {
   const api = useAxios();

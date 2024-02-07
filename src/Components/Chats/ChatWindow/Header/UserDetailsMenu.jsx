@@ -4,11 +4,11 @@ import {
   Title,
   UserDetailsMenuContainer,
   Value,
-} from "../../Styles/Components/Chats/UserDetailsMenu";
-import useOutsideClick from "../../Utils/useOutsideClick";
-import { ProfilePicContainer } from "../../Styles/Components/Chats/UserDetailsMenu";
-import { ProfilePic } from "../../Styles/Components/Chats/ProfilePicComponent";
-import FullscreenView from "./FullscreenView";
+} from "../../../../Styles/Components/Chats/ChatWindow/Header/UserDetailsMenu";
+import useOutsideClick from "../../../../Utils/useOutsideClick";
+import { ProfilePicContainer } from "../../../../Styles/Components/Chats/ChatWindow/Header/UserDetailsMenu";
+import { ProfilePic } from "../../../../Styles/Components/Chats/Sidebar/ProfilePicComponent";
+import FullscreenView from "../../FullscreenView";
 
 const UserDetailsMenu = (props) => {
   const {

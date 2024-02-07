@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../Context/UserContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../Utils/useAxios";
 import { UserTile } from "../Components/Chats/UserTile";
-import { ChatWindow } from "../Components/Chats/ChatWindow";
+import { ChatWindow } from "../Components/Chats/ChatWindow/ChatWindow";
 import { io } from "socket.io-client";
 import { SERVER_URL } from "../Config/Baseurl";
 import {
@@ -17,7 +17,7 @@ import {
   Title,
   UsersList,
 } from "../Styles/Pages/Chats";
-import { SideDrawer } from "../Components/Chats/SideDrawer";
+import { SideDrawer } from "../Components/Chats/Sidebar/SideDrawer";
 import MyContext from "../Context/MyContext";
 import { Loading } from "../Components/Loading/Loading";
 
@@ -79,65 +79,63 @@ export const Chats = () => {
   }, [accessToken, loggedInUser]);
 
   return (
-    <div>
-      <ChatContainer>
-        <ChatWrapper>
-          {/* Sidebar to show additional info */}
-          <Sidebar>
-            <ProfilePicContainer
-              onClick={toggleSideDrawer}
-              ref={profilePicContainerRef}
-            >
-              {loggedInUser?.profileInfo?.pic !== null ? (
-                <ProfilePic src={loggedInUser?.profileInfo?.pic} />
-              ) : (
-                loggedInUser?.fullname[0]
-              )}
-            </ProfilePicContainer>
-
-            <SideDrawer
-              toggleSideDrawer={toggleSideDrawer}
-              isOpen={isSideDrawerOpen}
-              setIsOpen={setIsSideDrawerOpen}
-              excludeRefs={[profilePicContainerRef]}
-            />
-          </Sidebar>
-
-          {/* User List to show all user */}
-          <LeftContainer>
-            <Title>Chats</Title>
-
-            <UsersList>
-              {loggedInUser ? (
-                users.map(
-                  (user) =>
-                    user._id !== loggedInUser._id && (
-                      <div
-                        key={user._id}
-                        onClick={() => {
-                          setActiveConversationUser(user);
-                        }}
-                      >
-                        <UserTile user={user} />
-                      </div>
-                    )
-                )
-              ) : (
-                <Loading />
-              )}
-            </UsersList>
-          </LeftContainer>
-
-          {/* Right Side to show selected user chat window*/}
-          <RightContainer>
-            {activeConversationUser !== null ? (
-              <ChatWindow />
+    <ChatContainer>
+      <ChatWrapper>
+        {/* Sidebar to show additional info */}
+        <Sidebar>
+          <ProfilePicContainer
+            onClick={toggleSideDrawer}
+            ref={profilePicContainerRef}
+          >
+            {loggedInUser?.profileInfo?.pic !== null ? (
+              <ProfilePic src={loggedInUser?.profileInfo?.pic} />
             ) : (
-              <div>Please select a user to start chat</div>
+              loggedInUser?.fullname[0]
             )}
-          </RightContainer>
-        </ChatWrapper>
-      </ChatContainer>
-    </div>
+          </ProfilePicContainer>
+
+          <SideDrawer
+            toggleSideDrawer={toggleSideDrawer}
+            isOpen={isSideDrawerOpen}
+            setIsOpen={setIsSideDrawerOpen}
+            excludeRefs={[profilePicContainerRef]}
+          />
+        </Sidebar>
+
+        {/* User List to show all user */}
+        <LeftContainer>
+          <Title>Chats</Title>
+
+          <UsersList>
+            {loggedInUser ? (
+              users.map(
+                (user) =>
+                  user._id !== loggedInUser._id && (
+                    <div
+                      key={user._id}
+                      onClick={() => {
+                        setActiveConversationUser(user);
+                      }}
+                    >
+                      <UserTile user={user} />
+                    </div>
+                  )
+              )
+            ) : (
+              <Loading />
+            )}
+          </UsersList>
+        </LeftContainer>
+
+        {/* Right Side to show selected user chat window*/}
+        <RightContainer>
+          {activeConversationUser !== null ? (
+            <ChatWindow />
+          ) : (
+            <div>Please select a user to start chat</div>
+          )}
+        </RightContainer>
+      </ChatWrapper>
+    </ChatContainer>
   );
 };

@@ -6,9 +6,9 @@ import {
   PreviewContainer,
   PreviewImage,
   PreviewImageContainer,
-} from "../../Styles/Components/Chats/Preview";
+} from "../../../../Styles/Components/Chats/Footer/Preview";
 import { IoMdCloseCircle } from "react-icons/io";
-import { Loading } from "../Loading/Loading";
+import { Loading } from "../../../Loading/Loading";
 
 const Preview = (props) => {
   const { selectedImage, setSelectedImage, previewLoading } = props;
