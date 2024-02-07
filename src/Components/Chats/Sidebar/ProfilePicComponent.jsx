@@ -25,6 +25,7 @@ import useAxios from "../../../Utils/useAxios";
 import MyContext from "../../../Context/MyContext";
 import { uploadFile } from "../../../Utils/Cloudinary";
 import { Loading } from "../../Loading/Loading";
+import FullscreenView from "../FullscreenView";
 
 export const ProfilePicComponent = () => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
@@ -38,6 +39,7 @@ export const ProfilePicComponent = () => {
 
   const [profilePic, setProfilePic] = useState(loggedInUser?.profileInfo?.pic);
   const [selectedPic, setSelectedPic] = useState(null);
+  const [showFullscreenView, setShowFullscreenView] = useState(false);
 
   useEffect(() => {
     setProfilePic(loggedInUser?.profileInfo?.pic);
@@ -85,6 +87,7 @@ export const ProfilePicComponent = () => {
   // View Profile Pic
   const handleViewProfile = (e) => {
     setIsMenuOpen(false);
+    setShowFullscreenView(true);
     e.stopPropagation();
   };
 
@@ -165,6 +168,7 @@ export const ProfilePicComponent = () => {
       )}
 
       <Menu ismenuopen={isMenuOpen.toString()} ref={profilePicMenuRef}>
+        {/* View Profile */}
         {profilePic !== null && (
           <MenuItem onClick={handleViewProfile}>
             <MdRemoveRedEye />
@@ -172,6 +176,7 @@ export const ProfilePicComponent = () => {
           </MenuItem>
         )}
 
+        {/* Change / Upload Profile */}
         <MenuItem onClick={handleImageInputClick}>
           <MdAddAPhoto />
           <span>{profilePic !== null ? "Change image" : "Upload image"}</span>
@@ -184,6 +189,7 @@ export const ProfilePicComponent = () => {
           />
         </MenuItem>
 
+        {/* Remove Profile */}
         {profilePic !== null && (
           <MenuItem onClick={handleRemoveProfile}>
             <MdOutlineNoPhotography />
@@ -192,6 +198,7 @@ export const ProfilePicComponent = () => {
         )}
       </Menu>
 
+      {/* Cancel Button appear to stop uploading */}
       {selectedPic !== null && !loading && (
         <CancelButton
           onClick={(e) => {
@@ -204,10 +211,21 @@ export const ProfilePicComponent = () => {
         </CancelButton>
       )}
 
+      {/* Upload button appear for uploading */}
       {selectedPic !== null && !loading && (
         <UploadButton onClick={handleChangeProfile} title="Upload">
           <RiUploadCloud2Fill />
         </UploadButton>
+      )}
+
+      {/* Fullscreen to view profile pic */}
+      {showFullscreenView && profilePic !== null && (
+        <FullscreenView
+          show={showFullscreenView}
+          setShow={setShowFullscreenView}
+          forProfilePic={true}
+          activeConversationUser={loggedInUser}
+        />
       )}
     </ProfilePicContainer>
   );

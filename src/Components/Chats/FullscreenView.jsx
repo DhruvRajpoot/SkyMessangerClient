@@ -12,8 +12,9 @@ import { formateDateAndTime } from "../../Utils/common";
 
 const FullscreenView = (props) => {
   // Function to handle close
-  const handleClose = () => {
+  const handleClose = (e) => {
     props.setShow(false);
+    e.stopPropagation();
   };
 
   // Image Url
@@ -24,11 +25,11 @@ const FullscreenView = (props) => {
   // Header Title
   const renderHeaderTitle = () => {
     if (props.forProfilePic) {
-      return `SkyMessanger - ${props.activeConversationUser.fullname} Profile Picture`;
+      return `SkyMessanger - ${props?.activeConversationUser?.fullname} Profile Picture`;
     }
 
     const msgBy =
-      props.msgByMe === true ? "You" : props.activeConversationUser.fullname;
+      props.msgByMe === true ? "You" : props?.activeConversationUser?.fullname;
     const date = formateDateAndTime(props.message.createdAt);
     return `SkyMessanger - ${msgBy}, ${date}`;
   };
@@ -53,7 +54,7 @@ const FullscreenView = (props) => {
   };
 
   return (
-    <FullscreenViewContainer show={props.show.toString()}>
+    <FullscreenViewContainer>
       <Header>
         <Title>{renderHeaderTitle()}</Title>
         {props.forProfilePic !== true && (
