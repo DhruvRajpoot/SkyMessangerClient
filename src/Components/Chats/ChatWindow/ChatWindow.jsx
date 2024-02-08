@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import UserContext from "../../../Context/UserContext";
 import useAxios from "../../../Utils/useAxios";
 import { Message } from "../Message";
@@ -10,10 +16,11 @@ import {
   MessageContainer,
   TypingLoader,
 } from "../../../Styles/Components/Chats/ChatWindow/ChatWindow";
-import { formateDate, formateDateAndTime } from "../../../Utils/common";
+import { formateDate } from "../../../Utils/common";
 import axios from "axios";
 import { SERVER_URL } from "../../../Config/Baseurl";
 import { Loading } from "../../Loading/Loading";
+import ScrollToBottom from "./ScrollToBottom";
 
 export const ChatWindow = () => {
   const api = useAxios();
@@ -130,6 +137,7 @@ export const ChatWindow = () => {
     }
   };
 
+  // Sending isTyping Event
   const sendIsTypingEvent = (isTyping) => {
     socket.emit("isTyping", {
       senderId: loggedInUser._id,
@@ -138,6 +146,7 @@ export const ChatWindow = () => {
     });
   };
 
+  // Handle Typing
   const handleTyping = async (e) => {
     if (e.target.value === "" || !socket) return;
     try {
@@ -199,16 +208,16 @@ export const ChatWindow = () => {
     }
   }, []);
 
-  // Auto Scroll to bottom
-  const autoScrollRef = useRef(null);
-  useEffect(() => {
-    if (allMessages.length) {
-      autoScrollRef.current?.scrollIntoView({
-        behaviour: "smooth",
-        block: "end",
-      });
-    }
-  }, [allMessages.length]);
+  // // Auto Scroll to bottom
+  // const autoScrollRef = useRef(null);
+  // useEffect(() => {
+  //   if (allMessages.length) {
+  //     autoScrollRef.current?.scrollIntoView({
+  //       behaviour: "smooth",
+  //       block: "end",
+  //     });
+  //   }
+  // }, [allMessages.length]);
 
   // Show Date when date changes (when new day starts)
   const showDateOnChange = (message, index) => {
@@ -223,6 +232,9 @@ export const ChatWindow = () => {
     return currentDate !== previousDate;
   };
 
+  // Ref for message container
+  const messageContainerRef = useRef(null);
+
   return (
     <ChatWindowContainer>
       <Header
@@ -230,7 +242,7 @@ export const ChatWindow = () => {
         activeConversationUserLastSeen={activeConversationUserLastSeen}
       />
 
-      <MessageContainer>
+      <MessageContainer ref={messageContainerRef}>
         {showLoading ? (
           <Loading />
         ) : (
@@ -256,7 +268,10 @@ export const ChatWindow = () => {
           </TypingLoader>
         )}
 
-        <div ref={autoScrollRef} style={{ height: "0px", margin: "0px" }} />
+        <ScrollToBottom
+          messageContainerRef={messageContainerRef}
+          allMessages={allMessages}
+        />
       </MessageContainer>
 
       <Footer

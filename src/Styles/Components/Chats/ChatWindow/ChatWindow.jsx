@@ -13,7 +13,8 @@ export const MessageContainer = styled.div`
   overflow-y: scroll;
   gap: 1rem;
   height: 100%;
-  padding: 1rem 0.5rem 0 0.5rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  position: relative;
 
   * {
     user-select: text;
@@ -38,4 +39,26 @@ export const TypingLoader = styled.div`
   justify-content: flex-start;
   width: fit-content;
   height: fit-content;
+`;
+
+export const ScrollToBottomButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 4rem;
+  right: 12px;
+  background-color: #ababab;
+  color: #050505;
+  font-size: 1.5rem;
+  padding: 5px;
+  border-radius: 50%;
+  border: none;
+  border: 1px solid #3e3e3e;
+  z-index: 100;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9c9c9c;
+  }
 `;
