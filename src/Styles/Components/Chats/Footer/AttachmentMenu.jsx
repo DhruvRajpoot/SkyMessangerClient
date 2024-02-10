@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const AttachmentMenuContainer = styled.div`
+  width: 157px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

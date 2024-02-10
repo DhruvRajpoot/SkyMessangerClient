@@ -58,7 +58,8 @@ export const MessageWrapper = styled.div`
       ? "0"
       : "45px"};
 
-  img {
+  img,
+  video {
     max-width: 400px;
     max-height: 400px;
     background: #f1f1f1;

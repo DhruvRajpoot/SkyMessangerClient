@@ -1,6 +1,4 @@
 import React, { useContext, useRef, useState } from "react";
-import { MdPhotoSizeSelectActual } from "react-icons/md";
-import { FaVideo } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { GoFileDirectoryFill } from "react-icons/go";
 import {
@@ -8,37 +6,31 @@ import {
   HiddenInput,
 } from "../../../../Styles/Components/Chats/Footer/AttachmentMenu";
 import MyContext from "../../../../Context/MyContext";
+import { IoMdPhotos } from "react-icons/io";
 
 const AttachmentMenu = (props) => {
   const { showToastMessage } = useContext(MyContext);
-  const photoInputRef = useRef(null);
-  const videoInputRef = useRef(null);
+  const imageVideoInputRef = useRef(null);
   const documentInputRef = useRef(null);
 
-  // Handle photo
-  const handlePhotoClick = (e) => {
-    photoInputRef.current.click();
+  // Handle image or video button click
+  const handleImageOrVideoClick = (e) => {
+    imageVideoInputRef.current.click();
     props.setShowAttachMenu(false);
     e.stopPropagation();
   };
 
-  const handlePhotoChange = (e) => {
+  // Handle image or video change
+  const handleImageOrVideoChange = (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      if (file.type.startsWith("image/")) {
-        props.setSelectedImage(file);
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        props.setSelectedImageOrVideo(file);
       } else {
-        showToastMessage("Error", "Please select an image file");
+        showToastMessage("Error", "Please select an image or video file");
       }
     }
-  };
-
-  // Handle video button click
-  const handleVideoClick = (e) => {
-    videoInputRef.current.click();
-    props.setShowAttachMenu(false);
-    e.stopPropagation();
   };
 
   // Handle document button click
@@ -58,26 +50,16 @@ const AttachmentMenu = (props) => {
 
   return (
     <AttachmentMenuContainer showattachmenu={props.showAttachMenu.toString()}>
-      <div onClick={handlePhotoClick}>
-        <MdPhotoSizeSelectActual />
-        <span>Photo</span>
+      <div onClick={handleImageOrVideoClick}>
+        <IoMdPhotos />
+        <span>Image / Video</span>
         <HiddenInput
           type="file"
-          accept="image/*"
-          ref={photoInputRef}
+          accept="image/*,video/*"
+          id="imagevideo"
+          ref={imageVideoInputRef}
           value={""}
-          onChange={handlePhotoChange}
-        />
-      </div>
-
-      <div onClick={handleVideoClick}>
-        <FaVideo />
-        <span>Video</span>
-        <HiddenInput
-          type="file"
-          accept="video/*"
-          id="video"
-          ref={videoInputRef}
+          onChange={handleImageOrVideoChange}
         />
       </div>
 

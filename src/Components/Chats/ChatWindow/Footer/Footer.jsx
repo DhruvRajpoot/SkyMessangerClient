@@ -32,7 +32,7 @@ export const Footer = ({
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const AttachButtonRef = useRef(null);
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageOrVideo, setSelectedImageOrVideo] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
 
   // Close emoji picker when clicked outside
@@ -68,20 +68,40 @@ export const Footer = ({
       let messageType = "text";
       let newMessage = message;
 
-      if (selectedImage) {
-        messageType = "image";
+      const fileType = selectedImageOrVideo
+        ? selectedImageOrVideo.type.split("/")[0]
+        : null;
 
+      if (fileType === "image") {
+        messageType = "image";
         setPreviewLoading(true);
+
         const data = await uploadFile(
-          selectedImage,
+          selectedImageOrVideo,
           "image",
           "high_res_image_preset"
         );
+
         newMessage = data.secure_url;
         setPreviewLoading(false);
+        setSelectedImageOrVideo(null);
       }
 
-      setSelectedImage(null);
+      if (fileType === "video") {
+        messageType = "video";
+        setPreviewLoading(true);
+
+        const data = await uploadFile(
+          selectedImageOrVideo,
+          "video",
+          "video_preset"
+        );
+
+        newMessage = data.secure_url;
+        setPreviewLoading(false);
+        setSelectedImageOrVideo(null);
+      }
+
       await handleMessageSend(newMessage, messageType);
     } catch (error) {
       handleError(error);
@@ -121,15 +141,14 @@ export const Footer = ({
         <AttachmentMenu
           showAttachMenu={showAttachMenu.toString()}
           setShowAttachMenu={setShowAttachMenu}
-          setSelectedImage={setSelectedImage}
+          setSelectedImageOrVideo={setSelectedImageOrVideo}
         />
       </AttachButton>
 
-      {/* Preview Section for images, files etc. */}
-      {selectedImage && (
+      {selectedImageOrVideo && (
         <Preview
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
+          selectedImageOrVideo={selectedImageOrVideo}
+          setSelectedImageOrVideo={setSelectedImageOrVideo}
           previewLoading={previewLoading}
         />
       )}

@@ -29,9 +29,20 @@ export const Message = ({ message, allMessages }) => {
         return (
           <img
             src={message.message}
-            alt="chat-img"
+            alt="image"
             onClick={handleShowFullScreen}
+            loading="lazy"
           />
+        );
+
+      case "video":
+        return (
+          <video controls loading="lazy" width="100%" height="auto">
+            <source src={message.message} type="video/mp4" />
+            Your browser does not support the video tag. Try using a different
+            browser or paste the link in the address bar. Link :{" "}
+            {message.message}
+          </video>
         );
 
       default:
