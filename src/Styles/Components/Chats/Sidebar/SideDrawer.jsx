@@ -11,27 +11,10 @@ export const SideDrawerContainer = styled.div`
   z-index: 100;
   top: 0;
   overflow-y: scroll;
-  animation: slideIn 0.2s ease-out forwards;
-
-  @keyframes slideIn {
-    0% {
-      left: -100%;
-      opacity: 0;
-      display: none;
-    }
-
-    20% {
-      left: 50%;
-      opacity: 0.5;
-      display: none;
-    }
-
-    100% {
-      left: 100%;
-      opacity: 1;
-      display: block;
-    }
-  }
+  left: ${(props) => (props.isopen === "true" ? "100%" : "-100%")};
+  opacity: ${(props) => (props.isopen === "true" ? 1 : 0)};
+  visibility: ${(props) => (props.isopen === "true" ? "visible" : "hidden")};
+  transition: all 0.15s ease-out;
 
   &::-webkit-scrollbar {
     width: 0;

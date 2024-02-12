@@ -116,7 +116,7 @@ export const SideDrawer = (props) => {
   );
 
   return (
-    <SideDrawerContainer ref={sideDrawerRef}>
+    <SideDrawerContainer isopen={props.isOpen.toString()} ref={sideDrawerRef}>
       <SideDrawerWrapper>
         <Heading>My account</Heading>
 
