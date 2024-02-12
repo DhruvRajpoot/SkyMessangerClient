@@ -1,5 +1,6 @@
 const today = new Date();
 
+// Formate Date (Today, Yesterday, Weekday, Date)
 export const formateDate = (dateString) => {
   const date = new Date(dateString);
 
@@ -22,6 +23,7 @@ export const formateDate = (dateString) => {
   }
 };
 
+// Formate Time (AM/PM)
 export const formateTime = (dateString) => {
   const date = new Date(dateString);
   let hours = date.getHours();
@@ -34,6 +36,66 @@ export const formateTime = (dateString) => {
   return strTime;
 };
 
+// Formate Date and Time
 export const formateDateAndTime = (dateString) => {
   return `${formateDate(dateString)} at ${formateTime(dateString)}`;
+};
+
+// Slice Text (Text, Length)
+export const sliceText = (text, length) => {
+  return text.length > length ? text.slice(0, length) + "..." : text;
+};
+
+// Create File Name
+export const createfileName = (fileUrl) => {
+  const date = new Date();
+  const fileExtension = fileUrl.split(".").pop();
+
+  switch (fileExtension) {
+    case "pdf":
+      return `SkyMessanger_pdf_${date.toISOString()}.${fileExtension}`;
+
+    case "doc":
+    case "docx":
+      return `SkyMessanger_document_${date.toISOString()}.${fileExtension}`;
+
+    case "ppt":
+    case "pptx":
+      return `SkyMessanger_presentation_${date.toISOString()}.${fileExtension}`;
+
+    case "xls":
+    case "xlsx":
+      return `SkyMessanger_spreadsheet_${date.toISOString()}.${fileExtension}`;
+
+    case "txt":
+      return `SkyMessanger_text_${date.toISOString()}.${fileExtension}`;
+
+    case "mp4":
+      return `SkyMessanger_Video_${date.toISOString()}.${fileExtension}`;
+
+    case "jpg":
+    case "jpeg":
+    case "png":
+    case "gif":
+    case "webp":
+    case "svg":
+    case "ico":
+      return `SkyMessanger_Image_${date.toISOString()}.${fileExtension}`;
+
+    default:
+      return `SkyMessanger_File_${date.toISOString()}.${fileExtension}`;
+  }
+};
+
+// Download file to local machine
+export const handleDownload = async (file) => {
+  console.log(file);
+  const fileBlob = await fetch(file).then((r) => r.blob());
+  const fileUrl = URL.createObjectURL(fileBlob);
+  const link = document.createElement("a");
+  link.href = fileUrl;
+  link.download = createfileName(file); // name
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };

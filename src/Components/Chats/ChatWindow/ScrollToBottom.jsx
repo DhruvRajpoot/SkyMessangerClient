@@ -11,7 +11,7 @@ import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 const ScrollToBottom = (props) => {
   const { messageContainerRef, allMessages } = props;
   const scrollToBottomButtonRef = useRef(null);
-  const [scrolledToBottom, setScrolledToBottom] = useState(true);
+  const [scrolledToBottom, setScrolledToBottom] = useState(false);
 
   // Function to check whether the chat window is scrolled to the bottom
   const checkScrollPosition = useCallback(() => {

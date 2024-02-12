@@ -26,7 +26,7 @@ const AttachmentMenu = (props) => {
 
     if (file) {
       if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-        props.setSelectedImageOrVideo(file);
+        props.setSelectedFile(file);
       } else {
         showToastMessage("Error", "Please select an image or video file");
       }
@@ -35,9 +35,19 @@ const AttachmentMenu = (props) => {
 
   // Handle document button click
   const handleDocumentClick = (e) => {
-    console.log("Document clicked");
     documentInputRef.current.click();
     props.setShowAttachMenu(false);
+    e.stopPropagation();
+  };
+
+  // Handle document change
+  const handleDocumentChange = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+
+    if (file) {
+      props.setSelectedFile(file);
+    }
     e.stopPropagation();
   };
 
@@ -71,6 +81,8 @@ const AttachmentMenu = (props) => {
           accept=".pdf,.doc,.docx,.txt,.ppt,.pptx,.xls,.xlsx"
           id="document"
           ref={documentInputRef}
+          value={""}
+          onChange={handleDocumentChange}
         />
       </div>
 

@@ -2,47 +2,80 @@ import React, { useState } from "react";
 import {
   CloseButton,
   Header,
+  IconContainer,
   LoadingContainer,
   PreviewContainer,
-  PreviewImage,
   PreviewImageContainer,
 } from "../../../../Styles/Components/Chats/Footer/Preview";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Loading } from "../../../Loading/Loading";
+import { FaFile, FaFilePdf } from "react-icons/fa6";
+import { BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
+import { SiGoogledocs, SiGooglesheets } from "react-icons/si";
 
 const Preview = (props) => {
-  const { selectedImageOrVideo, setSelectedImageOrVideo, previewLoading } =
-    props;
+  const { selectedFile, setSelectedFile, previewLoading } = props;
 
-  const imgOrVideoSrc = selectedImageOrVideo
-    ? URL.createObjectURL(selectedImageOrVideo)
-    : null;
-
-  const fileType = selectedImageOrVideo
-    ? selectedImageOrVideo.type.split("/")[0]
-    : null;
+  const fileType = selectedFile ? selectedFile.type.split("/")[0] : null;
+  const fileSrc = selectedFile ? URL.createObjectURL(selectedFile) : null;
 
   const handlePreviewClose = (e) => {
-    setSelectedImageOrVideo(null);
+    setSelectedFile(null);
     e.stopPropagation();
   };
 
   const renderPreview = () => {
     switch (fileType) {
       case "image":
-        return <PreviewImage src={imgOrVideoSrc} alt="image" />;
+        return <img src={fileSrc} alt="image" />;
 
       case "video":
         return (
-          <video controls width="100%" height="auto">
-            <source src={imgOrVideoSrc} type="video/mp4" />
+          <video controls>
+            <source src={fileSrc} type="video/mp4" />
             Your browser does not support the video tag. Try using a different
-            browser or paste the link in the address bar. Link : {imgOrVideoSrc}
+            browser or paste the link in the address bar. Link : {fileSrc}
           </video>
         );
 
       default:
-        return null;
+        const fileExtension = selectedFile.name.split(".").pop();
+        let icon;
+
+        switch (fileExtension) {
+          case "pdf":
+            icon = <FaFilePdf />;
+            break;
+
+          case "doc":
+          case "docx":
+            icon = <SiGoogledocs />;
+            break;
+
+          case "ppt":
+          case "pptx":
+            icon = <BsFiletypePpt />;
+            break;
+
+          case "xls":
+          case "xlsx":
+            icon = <SiGooglesheets />;
+            break;
+
+          case "txt":
+            icon = <BsFiletypeTxt />;
+            break;
+
+          default:
+            icon = <FaFile />;
+        }
+
+        return (
+          <IconContainer>
+            <span>{icon}</span>
+            <p>{selectedFile.name}</p>
+          </IconContainer>
+        );
     }
   };
 
@@ -55,7 +88,7 @@ const Preview = (props) => {
         </CloseButton>
       </Header>
 
-      {imgOrVideoSrc && (
+      {fileSrc && (
         <PreviewImageContainer>
           {renderPreview()}
 

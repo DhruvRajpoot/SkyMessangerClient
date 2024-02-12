@@ -32,7 +32,7 @@ export const Footer = ({
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const AttachButtonRef = useRef(null);
 
-  const [selectedImageOrVideo, setSelectedImageOrVideo] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
 
   // Close emoji picker when clicked outside
@@ -67,43 +67,54 @@ export const Footer = ({
 
       let messageType = "text";
       let newMessage = message;
+      let result = null;
 
-      const fileType = selectedImageOrVideo
-        ? selectedImageOrVideo.type.split("/")[0]
-        : null;
+      if (selectedFile) {
+        const fileType = selectedFile ? selectedFile.type.split("/")[0] : null;
+        switch (fileType) {
+          case "image":
+            messageType = "image";
+            setPreviewLoading(true);
 
-      if (fileType === "image") {
-        messageType = "image";
-        setPreviewLoading(true);
+            result = await uploadFile(
+              selectedFile,
+              "image",
+              "high_res_image_preset"
+            );
 
-        const data = await uploadFile(
-          selectedImageOrVideo,
-          "image",
-          "high_res_image_preset"
-        );
+            newMessage = result.secure_url;
+            setPreviewLoading(false);
+            setSelectedFile(null);
 
-        newMessage = data.secure_url;
-        setPreviewLoading(false);
-        setSelectedImageOrVideo(null);
-      }
+            break;
 
-      if (fileType === "video") {
-        messageType = "video";
-        setPreviewLoading(true);
+          case "video":
+            messageType = "video";
+            setPreviewLoading(true);
 
-        const data = await uploadFile(
-          selectedImageOrVideo,
-          "video",
-          "video_preset"
-        );
+            result = await uploadFile(selectedFile, "video", "video_preset");
 
-        newMessage = data.secure_url;
-        setPreviewLoading(false);
-        setSelectedImageOrVideo(null);
+            newMessage = result.secure_url;
+            setPreviewLoading(false);
+            setSelectedFile(null);
+            break;
+
+          default:
+            messageType = "document";
+            setPreviewLoading(true);
+
+            result = await uploadFile(selectedFile, "auto", "document_preset");
+
+            newMessage = result.secure_url;
+            setPreviewLoading(false);
+            setSelectedFile(null);
+            break;
+        }
       }
 
       await handleMessageSend(newMessage, messageType);
     } catch (error) {
+      setSelectedFile(null);
       handleError(error);
     }
   };
@@ -141,14 +152,14 @@ export const Footer = ({
         <AttachmentMenu
           showAttachMenu={showAttachMenu.toString()}
           setShowAttachMenu={setShowAttachMenu}
-          setSelectedImageOrVideo={setSelectedImageOrVideo}
+          setSelectedFile={setSelectedFile}
         />
       </AttachButton>
 
-      {selectedImageOrVideo && (
+      {selectedFile && (
         <Preview
-          selectedImageOrVideo={selectedImageOrVideo}
-          setSelectedImageOrVideo={setSelectedImageOrVideo}
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
           previewLoading={previewLoading}
         />
       )}

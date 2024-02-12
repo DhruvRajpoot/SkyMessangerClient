@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
 export const AttachmentMenuContainer = styled.div`
-  width: 157px;
+  width: 160px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   padding: 5px;
   background: white;
   color: #3f3f3f;
@@ -23,7 +22,7 @@ export const AttachmentMenuContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 7px 15px 7px 10px;
+    padding: 10px 15px 10px 10px;
     border-radius: 5px;
     transition: all 0.05s ease-in-out;
     color: black;

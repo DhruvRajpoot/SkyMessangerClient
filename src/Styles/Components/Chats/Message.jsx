@@ -35,12 +35,13 @@ export const ProfilePic = styled.img`
 export const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   width: fit-content;
   height: auto;
   word-wrap: break-word;
   max-width: 75%;
-  padding: 4px 10px;
+  /* padding: 4px 10px; */
+  padding: 5px;
   font-size: calc(0.8rem + 0.2vw);
   border: 1px solid #dfedec;
   background: #dfedec;
@@ -59,8 +60,11 @@ export const MessageWrapper = styled.div`
       : "45px"};
 
   img,
-  video {
-    max-width: 400px;
+  video,
+  iframe {
+    width: 100%;
+    height: 100%;
+    width: 400px;
     max-height: 400px;
     background: #f1f1f1;
     border-radius: ${(props) =>
@@ -74,5 +78,27 @@ export const MessageWrapper = styled.div`
   small {
     font-size: calc(0.5rem + 0.1vw);
     user-select: none;
+  }
+`;
+
+export const IconContainer = styled.div`
+  max-width: 400px;
+  display: flex;
+  text-align: left;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+  }
+
+  &:active {
+    background: #f1f1f1;
   }
 `;

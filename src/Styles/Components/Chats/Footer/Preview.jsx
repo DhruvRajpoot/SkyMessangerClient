@@ -39,13 +39,33 @@ export const PreviewImageContainer = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+  }
 `;
 
-export const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
+export const IconContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 5rem;
   border-radius: 5px;
-  object-fit: cover;
+  background: #fff;
+
+  span {
+    font-size: 5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
 `;
 
 export const LoadingContainer = styled.div`

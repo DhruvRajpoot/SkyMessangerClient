@@ -208,17 +208,6 @@ export const ChatWindow = () => {
     }
   }, []);
 
-  // // Auto Scroll to bottom
-  // const autoScrollRef = useRef(null);
-  // useEffect(() => {
-  //   if (allMessages.length) {
-  //     autoScrollRef.current?.scrollIntoView({
-  //       behaviour: "smooth",
-  //       block: "end",
-  //     });
-  //   }
-  // }, [allMessages.length]);
-
   // Show Date when date changes (when new day starts)
   const showDateOnChange = (message, index) => {
     if (index === 0) {
