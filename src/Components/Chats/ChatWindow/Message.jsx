@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
-import UserContext from "../../Context/UserContext";
-import { formateTime, handleDownload, sliceText } from "../../Utils/common";
+import UserContext from "../../../Context/UserContext";
+import { formateTime, handleDownload, sliceText } from "../../../Utils/common";
 import {
   IconContainer,
   MessageContainer,
   MessageWrapper,
   ProfilePic,
   ProfilePicContainer,
-} from "../../Styles/Components/Chats/Message";
-import FullscreenView from "./FullscreenView";
+} from "../../../Styles/Components/Chats/ChatWindow/Message";
+import FullscreenView from "../FullscreenView";
 import { FaFile, FaFilePdf } from "react-icons/fa6";
 import { BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
 import { SiGoogledocs, SiGooglesheets } from "react-icons/si";

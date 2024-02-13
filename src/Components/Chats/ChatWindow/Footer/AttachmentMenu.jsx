@@ -4,7 +4,7 @@ import { GoFileDirectoryFill } from "react-icons/go";
 import {
   AttachmentMenuContainer,
   HiddenInput,
-} from "../../../../Styles/Components/Chats/Footer/AttachmentMenu";
+} from "../../../../Styles/Components/Chats/ChatWindow/Footer/AttachmentMenu";
 import MyContext from "../../../../Context/MyContext";
 import { IoMdPhotos } from "react-icons/io";
 

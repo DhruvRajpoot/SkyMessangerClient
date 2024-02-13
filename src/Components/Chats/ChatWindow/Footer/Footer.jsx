@@ -6,7 +6,7 @@ import {
   Form,
   TextInput,
   SendButton,
-} from "../../../../Styles/Components/Chats/Footer/Footer";
+} from "../../../../Styles/Components/Chats/ChatWindow/Footer/Footer";
 import { BsSendFill } from "react-icons/bs";
 import { MdEmojiEmotions } from "react-icons/md";
 import { ImAttachment } from "react-icons/im";

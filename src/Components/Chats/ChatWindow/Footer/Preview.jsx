@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   CloseButton,
   Header,
@@ -6,15 +6,17 @@ import {
   LoadingContainer,
   PreviewContainer,
   PreviewImageContainer,
-} from "../../../../Styles/Components/Chats/Footer/Preview";
+} from "../../../../Styles/Components/Chats/ChatWindow/Footer/Preview";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Loading } from "../../../Loading/Loading";
 import { FaFile, FaFilePdf } from "react-icons/fa6";
 import { BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
 import { SiGoogledocs, SiGooglesheets } from "react-icons/si";
+import useOutsideClick from "../../../../Utils/useOutsideClick";
 
 const Preview = (props) => {
   const { selectedFile, setSelectedFile, previewLoading } = props;
+  const previewContainerRef = useRef(null);
 
   const fileType = selectedFile ? selectedFile.type.split("/")[0] : null;
   const fileSrc = selectedFile ? URL.createObjectURL(selectedFile) : null;
@@ -79,8 +81,18 @@ const Preview = (props) => {
     }
   };
 
+  // Close preview on click outside
+  useOutsideClick(
+    previewContainerRef,
+    () => {
+      console.log("Preview closed on outside click");
+      setSelectedFile(null);
+    },
+    selectedFile
+  );
+
   return (
-    <PreviewContainer>
+    <PreviewContainer ref={previewContainerRef}>
       <Header>
         <h4>Preview</h4>
         <CloseButton onClick={handlePreviewClose} title="cancel">

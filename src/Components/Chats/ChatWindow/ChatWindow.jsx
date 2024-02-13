@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import UserContext from "../../../Context/UserContext";
 import useAxios from "../../../Utils/useAxios";
-import { Message } from "../Message";
+import { Message } from "./Message";
 import { Footer } from "./Footer/Footer";
 import Header from "./Header/Header";
 import {
