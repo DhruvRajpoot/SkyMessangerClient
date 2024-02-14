@@ -95,6 +95,13 @@ export const Message = ({ message, allMessages }) => {
           </IconContainer>
         );
 
+      case "location":
+        return (
+          <a href={message.message} target="_blank" rel="noreferrer">
+            {message.message}
+          </a>
+        );
+
       default:
         return <p>{message.message}</p>;
     }

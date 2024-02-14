@@ -26,6 +26,18 @@ const Preview = (props) => {
     e.stopPropagation();
   };
 
+  // Close preview on click outside
+  useOutsideClick(
+    previewContainerRef,
+    () => {
+      console.log("Preview closed on outside click");
+      setSelectedFile(null);
+    },
+    selectedFile,
+    [props.sendButtonRef]
+  );
+
+  // Render preview based on file type
   const renderPreview = () => {
     switch (fileType) {
       case "image":
@@ -80,16 +92,6 @@ const Preview = (props) => {
         );
     }
   };
-
-  // Close preview on click outside
-  useOutsideClick(
-    previewContainerRef,
-    () => {
-      console.log("Preview closed on outside click");
-      setSelectedFile(null);
-    },
-    selectedFile
-  );
 
   return (
     <PreviewContainer ref={previewContainerRef}>

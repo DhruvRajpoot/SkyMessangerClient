@@ -117,6 +117,7 @@ export const ChatWindow = () => {
     messageType = "text",
     caption = undefined
   ) => {
+    console.log("handleMessageSend");
     if (messageType === "text" && message === "") return;
 
     try {

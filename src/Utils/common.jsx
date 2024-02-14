@@ -99,3 +99,12 @@ export const handleDownload = async (file) => {
   link.click();
   document.body.removeChild(link);
 };
+
+// Stop Propagation (e)
+export const stopPropagation = (e) => {
+  if (e && e.stopPropagation) {
+    e.stopPropagation();
+  } else if (window.event) {
+    window.event.cancelBubble = true;
+  }
+};

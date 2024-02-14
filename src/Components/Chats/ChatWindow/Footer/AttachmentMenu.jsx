@@ -53,8 +53,9 @@ const AttachmentMenu = (props) => {
 
   // Handle location button click
   const handleLocationClick = (e) => {
-    console.log("Location clicked");
+    e.preventDefault();
     props.setShowAttachMenu(false);
+    props.setShowLocationPreview(true);
     e.stopPropagation();
   };
 

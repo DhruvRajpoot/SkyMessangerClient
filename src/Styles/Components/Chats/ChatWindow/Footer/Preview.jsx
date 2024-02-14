@@ -10,7 +10,7 @@ export const PreviewContainer = styled.div`
   border-radius: 5px;
   background: #f1f1f1;
   position: absolute;
-  left: 15%;
+  left: 12%;
   bottom: 60px;
   z-index: 148;
 `;

@@ -38,14 +38,12 @@ export const MessageWrapper = styled.div`
   gap: 5px;
   width: fit-content;
   height: auto;
-  word-wrap: break-word;
+  word-break: break-all;
   max-width: 75%;
-  /* padding: 4px 10px; */
-  padding: 5px;
+  padding: 5px 10px;
   font-size: calc(0.8rem + 0.2vw);
   border: 1px solid #dfedec;
   background: #dfedec;
-  text-align: ${(props) => (props.msgbyme === "true" ? "right" : "left")};
   border-radius: ${(props) =>
     props.msgbyme === "true" ? "10px 0 10px 10px" : "0 10px 10px 10px"};
   box-shadow: ${(props) =>
@@ -64,7 +62,7 @@ export const MessageWrapper = styled.div`
   iframe {
     width: 100%;
     height: 100%;
-    width: 400px;
+    max-width: 400px;
     max-height: 400px;
     background: #f1f1f1;
     border-radius: ${(props) =>
@@ -78,6 +76,7 @@ export const MessageWrapper = styled.div`
   small {
     font-size: calc(0.5rem + 0.1vw);
     user-select: none;
+    text-align: ${(props) => (props.msgbyme === "true" ? "right" : "left")};
   }
 `;
 

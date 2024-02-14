@@ -17,6 +17,7 @@ import AttachmentMenu from "./AttachmentMenu";
 import Preview from "./Preview";
 import { uploadFile } from "../../../../Utils/Cloudinary";
 import MyContext from "../../../../Context/MyContext";
+import LocationPreview from "./LocationPreview";
 
 export const Footer = ({
   message,
@@ -34,6 +35,9 @@ export const Footer = ({
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showLocationPreview, setShowLocationPreview] = useState(false);
+  const sendButtonRef = useRef(null);
 
   // Close emoji picker when clicked outside
   useOutsideClick(
@@ -61,12 +65,14 @@ export const Footer = ({
   );
 
   // Handle Form Submit
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (
+    e,
+    newMessage = message,
+    messageType = "text"
+  ) => {
+    console.log("Form Submitted");
     try {
       e.preventDefault();
-
-      let messageType = "text";
-      let newMessage = message;
       let result = null;
 
       if (selectedFile) {
@@ -115,6 +121,7 @@ export const Footer = ({
       await handleMessageSend(newMessage, messageType);
     } catch (error) {
       setSelectedFile(null);
+      setSelectedLocation(null);
       handleError(error);
     }
   };
@@ -153,14 +160,28 @@ export const Footer = ({
           showAttachMenu={showAttachMenu.toString()}
           setShowAttachMenu={setShowAttachMenu}
           setSelectedFile={setSelectedFile}
+          setShowLocationPreview={setShowLocationPreview}
         />
       </AttachButton>
 
+      {/* Preview Section */}
       {selectedFile && (
         <Preview
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
           previewLoading={previewLoading}
+          sendButtonRef={sendButtonRef}
+        />
+      )}
+
+      {/* Location Preview Section */}
+      {showLocationPreview && (
+        <LocationPreview
+          setShowLocationPreview={setShowLocationPreview}
+          setMessage={setMessage}
+          selectedLocation={selectedLocation}
+          setSelectedLocation={setSelectedLocation}
+          handleFormSubmit={handleFormSubmit}
         />
       )}
 
@@ -177,7 +198,7 @@ export const Footer = ({
       />
 
       {/* Send Button Section */}
-      <SendButton type="submit" title="Send message">
+      <SendButton type="submit" title="Send message" ref={sendButtonRef}>
         <BsSendFill />
       </SendButton>
     </Form>
