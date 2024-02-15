@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import UserContext from "../../../Context/UserContext";
 import { formateTime, handleDownload, sliceText } from "../../../Utils/common";
 import {
+  Icon,
   IconContainer,
   MessageContainer,
   MessageWrapper,
@@ -9,8 +10,9 @@ import {
   ProfilePicContainer,
 } from "../../../Styles/Components/Chats/ChatWindow/Message";
 import FullscreenView from "../FullscreenView";
-import { FaFile, FaFilePdf } from "react-icons/fa6";
-import { BsFiletypePpt, BsFiletypeTxt } from "react-icons/bs";
+import { FaFile, FaLocationDot } from "react-icons/fa6";
+import { FaFilePdf } from "react-icons/fa";
+import { BsFiletypePpt, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import { SiGoogledocs, SiGooglesheets } from "react-icons/si";
 
 export const Message = ({ message, allMessages }) => {
@@ -18,6 +20,7 @@ export const Message = ({ message, allMessages }) => {
   const msgByMe =
     message.senderId !== activeConversationUser._id ? "true" : "false";
 
+  // Show profile pic if the message is sent by the other user
   const showProfile = () => {
     if (msgByMe === "true") return false;
     const index = allMessages.indexOf(message);
@@ -27,6 +30,25 @@ export const Message = ({ message, allMessages }) => {
     return false;
   };
 
+  // Function to parse text and render URLs as links
+  const renderTextWithLinks = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a key={index} href={part} target="_blank" rel="noopener noreferrer">
+            {part}
+          </a>
+        );
+      } else {
+        return <span key={index}>{part}</span>;
+      }
+    });
+  };
+
+  // Render message based on the message type
   const renderMessage = () => {
     const fileSrc = message.message;
 
@@ -53,34 +75,46 @@ export const Message = ({ message, allMessages }) => {
       case "document":
         const fileName = fileSrc.split("/").pop();
         const fileExtension = fileName.split(".").pop();
-        let icon;
+        let icon, backgroundColor, color;
 
         switch (fileExtension) {
           case "pdf":
             icon = <FaFilePdf />;
+            backgroundColor = "#d60000";
+            color = "#fff";
             break;
 
           case "doc":
           case "docx":
             icon = <SiGoogledocs />;
+            backgroundColor = "#2580f5";
+            color = "#fff";
             break;
 
           case "ppt":
           case "pptx":
             icon = <BsFiletypePpt />;
+            backgroundColor = "#ce502f";
+            color = "#fff";
             break;
 
           case "xls":
           case "xlsx":
             icon = <SiGooglesheets />;
+            backgroundColor = "#1f6e43";
+            color = "#fff";
             break;
 
           case "txt":
-            icon = <BsFiletypeTxt />;
+            icon = <BsFillFileEarmarkTextFill />;
+            backgroundColor = "#000";
+            color = "#fff";
             break;
 
           default:
             icon = <FaFile />;
+            backgroundColor = "#000";
+            color = "#fff";
         }
 
         return (
@@ -90,20 +124,25 @@ export const Message = ({ message, allMessages }) => {
             }}
             title="Download"
           >
-            <span>{icon}</span>
+            <Icon backgroundcolor={backgroundColor} color={color}>
+              {icon}
+            </Icon>
             <p>{sliceText(fileName, 45)}</p>
           </IconContainer>
         );
 
       case "location":
         return (
-          <a href={message.message} target="_blank" rel="noreferrer">
-            {message.message}
-          </a>
+          <IconContainer>
+            <span>
+              <FaLocationDot />
+            </span>
+            <p>{renderTextWithLinks(message.message)}</p>
+          </IconContainer>
         );
 
       default:
-        return <p>{message.message}</p>;
+        return <p>{renderTextWithLinks(message.message)}</p>;
     }
   };
 

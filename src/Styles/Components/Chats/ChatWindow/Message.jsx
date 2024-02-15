@@ -39,7 +39,7 @@ export const MessageWrapper = styled.div`
   width: fit-content;
   height: auto;
   word-break: break-all;
-  max-width: 75%;
+  max-width: calc(max(60%, 200px));
   padding: 5px 10px;
   font-size: calc(0.8rem + 0.2vw);
   border: 1px solid #dfedec;
@@ -81,7 +81,7 @@ export const MessageWrapper = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  max-width: 400px;
+  max-width: 100%;
   display: flex;
   text-align: left;
   align-items: center;
@@ -91,13 +91,20 @@ export const IconContainer = styled.div`
   background: #fff;
   cursor: pointer;
 
-  span {
-    display: flex;
-    align-items: center;
-    font-size: 2rem;
-  }
-
   &:active {
     background: #f1f1f1;
   }
+`;
+
+export const Icon = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding: 4px 1px;
+  margin: 0;
+  background-color: ${(props) => props.backgroundcolor || "#fff"};
+  border: 1px solid ${(props) => props.backgroundcolor || "#fff"};
+  border-radius: 5px;
+  color: ${(props) => props.color || "#000"};
 `;
