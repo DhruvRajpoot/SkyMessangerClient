@@ -22,8 +22,9 @@ import LocationPreview from "./LocationPreview";
 export const Footer = ({
   message,
   setMessage,
+  sendButtonDisabled,
   handleMessageSend,
-  handleTyping,
+  handleIsTypingEvent,
 }) => {
   const { handleError } = useContext(MyContext);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -147,6 +148,7 @@ export const Footer = ({
           previewPosition="none"
           theme="light"
           onEmojiSelect={(emoji) => {
+            handleIsTypingEvent();
             setMessage(message + emoji.native);
           }}
         />
@@ -190,15 +192,20 @@ export const Footer = ({
         type="text"
         placeholder="Type a message..."
         onChange={(e) => {
+          handleIsTypingEvent();
           setMessage(e.target.value);
         }}
-        onKeyDown={handleTyping}
         value={message}
         autoFocus
       />
 
       {/* Send Button Section */}
-      <SendButton type="submit" title="Send message" ref={sendButtonRef}>
+      <SendButton
+        type="submit"
+        title="Send message"
+        disabled={sendButtonDisabled}
+        ref={sendButtonRef}
+      >
         <BsSendFill />
       </SendButton>
     </Form>

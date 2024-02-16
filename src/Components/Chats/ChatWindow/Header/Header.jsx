@@ -13,7 +13,8 @@ import UserDetailsMenu from "./UserDetailsMenu";
 import FullscreenView from "../../FullscreenView";
 
 const Header = (props) => {
-  const { activeConversationUser, activeConversationUserLastSeen } = props;
+  const { activeConversationUser, activeConversationUserLastSeen, isTyping } =
+    props;
 
   const [showUserDetails, setShowUserDetails] = useState(false);
   const [showFullscreenView, setShowFullscreenView] = useState(false);
@@ -43,12 +44,14 @@ const Header = (props) => {
           {/* <h3>{activeConversationUser.email}</h3> */}
           <h3>{activeConversationUser.fullname}</h3>
           <p>
-            {activeConversationUserLastSeen &&
-              (activeConversationUserLastSeen === "Online"
-                ? "Online"
-                : `Last seen ${formateDateAndTime(
-                    activeConversationUserLastSeen
-                  )}`)}
+            {isTyping
+              ? "Typing..."
+              : activeConversationUserLastSeen &&
+                (activeConversationUserLastSeen === "Online"
+                  ? "Online"
+                  : `Last seen ${formateDateAndTime(
+                      activeConversationUserLastSeen
+                    )}`)}
           </p>
         </TextDataContainer>
 

@@ -14,7 +14,6 @@ import {
   ChatWindowContainer,
   DateBlock,
   MessageContainer,
-  TypingLoader,
 } from "../../../Styles/Components/Chats/ChatWindow/ChatWindow";
 import { formateDate } from "../../../Utils/common";
 import axios from "axios";
@@ -32,6 +31,7 @@ export const ChatWindow = () => {
   const [allMessages, setAllMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
+  const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
 
   let typingTimeout = null;
   const [isTyping, setIsTyping] = useState(false);
@@ -90,7 +90,6 @@ export const ChatWindow = () => {
       await fetchMessages(tempConversationId);
     }
     setShowLoading(false);
-    
   };
 
   // Effect runs when activeConversationUser changes
@@ -120,6 +119,8 @@ export const ChatWindow = () => {
   ) => {
     console.log("handleMessageSend");
     if (messageType === "text" && message === "") return;
+    sendIsTypingEvent(false);
+    setSendButtonDisabled(true);
 
     try {
       const { data } = await api.post("/messages/create", {
@@ -137,6 +138,8 @@ export const ChatWindow = () => {
     } catch (error) {
       handleError(error);
     }
+
+    setSendButtonDisabled(false);
   };
 
   // Sending isTyping Event
@@ -148,16 +151,11 @@ export const ChatWindow = () => {
     });
   };
 
-  // Handle Typing
-  const handleTyping = async (e) => {
-    if (e.target.value === "" || !socket) return;
+  // Handle IsTyping Event
+  const handleIsTypingEvent = async () => {
+    if (!socket) return;
     try {
       clearTimeout(typingTimeout);
-
-      if (e.key === "Enter") {
-        sendIsTypingEvent(false);
-        return;
-      }
 
       if (Date.now() - lastTimeTypingSent.current > 3000) {
         sendIsTypingEvent(true);
@@ -231,6 +229,7 @@ export const ChatWindow = () => {
       <Header
         activeConversationUser={activeConversationUser}
         activeConversationUserLastSeen={activeConversationUserLastSeen}
+        isTyping={isTyping}
       />
 
       <MessageContainer ref={messageContainerRef}>
@@ -253,12 +252,6 @@ export const ChatWindow = () => {
           </>
         )}
 
-        {isTyping && (
-          <TypingLoader>
-            <Loading type="typing" width={80} height={40} />
-          </TypingLoader>
-        )}
-
         <ScrollToBottom
           messageContainerRef={messageContainerRef}
           allMessages={allMessages}
@@ -268,8 +261,9 @@ export const ChatWindow = () => {
       <Footer
         message={message}
         setMessage={setMessage}
+        sendButtonDisabled={sendButtonDisabled}
         handleMessageSend={handleMessageSend}
-        handleTyping={handleTyping}
+        handleIsTypingEvent={handleIsTypingEvent}
       />
     </ChatWindowContainer>
   );
