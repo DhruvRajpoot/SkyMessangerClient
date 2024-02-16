@@ -87,9 +87,10 @@ export const ChatWindow = () => {
     setShowLoading(true);
     let tempConversationId = await fetchConversationId();
     if (tempConversationId !== null) {
-      fetchMessages(tempConversationId);
+      await fetchMessages(tempConversationId);
     }
     setShowLoading(false);
+    
   };
 
   // Effect runs when activeConversationUser changes

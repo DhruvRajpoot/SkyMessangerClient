@@ -16,6 +16,7 @@ import MyContext from "../../../Context/MyContext";
 import { MdEdit, MdOutlineCancel } from "react-icons/md";
 import { ProfilePicComponent } from "./ProfilePicComponent";
 import useOutsideClick from "../../../Utils/useOutsideClick";
+import LoadingGif from "../../../Assets/Loading/Loading2.gif";
 
 export const SideDrawer = (props) => {
   const api = useAxios();
@@ -37,7 +38,9 @@ export const SideDrawer = (props) => {
   }, [loggedInUser]);
 
   const [isFullNameEdit, setIsFullNameEdit] = useState(false);
+  const [fullNameBtnLoading, setFullNameBtnLoading] = useState(false);
   const [isBioEdit, setIsBioEdit] = useState(false);
+  const [bioBtnLoading, setBioBtnLoading] = useState(false);
 
   const handleFullNameEditClick = (e) => {
     setFullname(loggedInUser?.fullname);
@@ -53,8 +56,8 @@ export const SideDrawer = (props) => {
 
   const handleFullNameSave = async (e) => {
     try {
+      setFullNameBtnLoading(true);
       await api.put(`/user/updateuserinfo`, { fullname });
-      setIsFullNameEdit(false);
 
       const updatedUser = {
         ...loggedInUser,
@@ -63,6 +66,8 @@ export const SideDrawer = (props) => {
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setLoggedInUser(updatedUser);
+      setIsFullNameEdit(false);
+      setFullNameBtnLoading(false);
     } catch (err) {
       showToastMessage("Error", "Error while updating fullname");
       console.log(err);
@@ -71,8 +76,8 @@ export const SideDrawer = (props) => {
 
   const handleBioSave = async (e) => {
     try {
+      setBioBtnLoading(true);
       await api.put(`/user/updateuserinfo`, { bio });
-      setIsBioEdit(false);
 
       const updatedUser = {
         ...loggedInUser,
@@ -84,6 +89,8 @@ export const SideDrawer = (props) => {
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setLoggedInUser(updatedUser);
+      setIsBioEdit(false);
+      setBioBtnLoading(false);
     } catch (err) {
       showToastMessage("Error", "Error while updating bio");
       console.log(err);
@@ -145,9 +152,15 @@ export const SideDrawer = (props) => {
           {isFullNameEdit && (
             <SaveButton
               onClick={handleFullNameSave}
-              disabled={fullname === loggedInUser?.fullname}
+              disabled={
+                fullNameBtnLoading || fullname === loggedInUser?.fullname
+              }
             >
-              Save
+              {fullNameBtnLoading ? (
+                <img src={LoadingGif} alt="loading" loading="lazy" />
+              ) : (
+                "Save"
+              )}
             </SaveButton>
           )}
         </ProfileTextContainer>
@@ -175,9 +188,13 @@ export const SideDrawer = (props) => {
           {isBioEdit && (
             <SaveButton
               onClick={handleBioSave}
-              disabled={bio === loggedInUser?.profileInfo?.bio}
+              disabled={bioBtnLoading || bio === loggedInUser?.profileInfo?.bio}
             >
-              Save
+              {bioBtnLoading ? (
+                <img src={LoadingGif} alt="loading" loading="lazy" />
+              ) : (
+                "Save"
+              )}
             </SaveButton>
           )}
         </ProfileTextContainer>

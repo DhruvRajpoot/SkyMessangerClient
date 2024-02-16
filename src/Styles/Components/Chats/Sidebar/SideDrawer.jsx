@@ -76,6 +76,9 @@ export const EditButton = styled.button`
 `;
 
 export const SaveButton = styled(PrimaryButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.9rem;
   width: 80px;
   margin: 0 0 0 auto;
@@ -91,5 +94,16 @@ export const SaveButton = styled(PrimaryButton)`
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  &:active {
+    transform: scale(0.96) !important;
+  }
+
+  img {
+    width: 21px;
+    height: 21px;
+    object-fit: cover;
+    transform: scale(2.5);
   }
 `;
