@@ -1,5 +1,4 @@
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { createContext, useContext, useEffect, useState } from "react";
 import { SERVER_URL } from "../Config/Baseurl";
 import MyContext from "./MyContext";

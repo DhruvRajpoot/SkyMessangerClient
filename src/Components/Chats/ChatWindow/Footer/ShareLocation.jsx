@@ -63,7 +63,7 @@ const ShareLocation = ({
         <FlyToLocation location={currentLocation} />
 
         {selectedLocation && (
-          <Marker position={selectedLocation}>
+          <Marker position={selectedLocation} draggable>
             <Popup>
               Selected Location: <br />
               Latitude: {selectedLocation.lat.toFixed(6)} <br />
@@ -78,13 +78,7 @@ const ShareLocation = ({
             radius={8}
             color="#0145ff"
             fillColor="#0145ff"
-          >
-            <Popup>
-              Your Current Location: <br />
-              Latitude: {currentLocation.lat.toFixed(6)} <br />
-              Longitude: {currentLocation.lng.toFixed(6)}
-            </Popup>
-          </CircleMarker>
+          />
         )}
       </MapContainer>
     </div>

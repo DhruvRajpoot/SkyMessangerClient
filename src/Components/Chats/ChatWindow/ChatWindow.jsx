@@ -21,9 +21,11 @@ import axios from "axios";
 import { SERVER_URL } from "../../../Config/Baseurl";
 import { Loading } from "../../Loading/Loading";
 import ScrollToBottom from "./ScrollToBottom";
+import MyContext from "../../../Context/MyContext";
 
 export const ChatWindow = () => {
   const api = useAxios();
+  const { handleError } = useContext(MyContext);
   const { activeConversationUser, socket, loggedInUser, onlineUsers } =
     useContext(UserContext);
   const [message, setMessage] = useState("");
@@ -53,9 +55,7 @@ export const ChatWindow = () => {
       });
       setActiveConversationUserLastSeen(data.lastseen);
     } catch (error) {
-      console.log(
-        `Error while fetching active conversation user last seen: ${error}`
-      );
+      handleError(error);
     }
   };
 
@@ -68,7 +68,7 @@ export const ChatWindow = () => {
       setConversationId(data._id);
       return data._id;
     } catch (error) {
-      console.log(`Error while fetching conversation id : ${error}`);
+      handleError(error);
     }
   };
 
@@ -78,7 +78,7 @@ export const ChatWindow = () => {
       const { data } = await api.post(`/messages/getmessages/${id}`);
       setAllMessages(data);
     } catch (error) {
-      console.log(`Error while fetching messages: ${error}`);
+      handleError(error);
     }
   };
 
@@ -134,7 +134,7 @@ export const ChatWindow = () => {
         message: data,
       });
     } catch (error) {
-      console.log(`Error while sending message: ${error}`);
+      handleError(error);
     }
   };
 

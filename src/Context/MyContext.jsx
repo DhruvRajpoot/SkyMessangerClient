@@ -50,7 +50,8 @@ const MyContextProvider = ({ children }) => {
       setAccessToken(response.data.accessToken);
       return response.data.accessToken;
     } catch (err) {
-      handleError(err);
+      console.log("Error in getAccessTokenFromRefreshToken", err);
+      showToastMessage("Error", "Please Login Again");
     }
   };
 
@@ -68,12 +69,6 @@ const MyContextProvider = ({ children }) => {
         case "invalid token":
         case "invalid signature":
         case "jwt malformed":
-          showToastMessage("Error", "Invalid Token, Please Login Again");
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("user");
-          window.location.href = "/login";
-          break;
-
         case "jwt expired":
           getAccessTokenFromRefreshToken();
           break;
