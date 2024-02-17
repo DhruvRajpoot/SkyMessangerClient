@@ -11,7 +11,7 @@ export const ToastContainer = styled.div`
   right: 2vw;
   background-color: #fff;
   z-index: 999;
-  animation: slideIn 0.3s ease-in-out;
+  animation: slideIn 0.3s ease-in-out forwards;
 
   @keyframes slideIn {
     0% {

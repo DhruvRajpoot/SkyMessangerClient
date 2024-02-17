@@ -44,6 +44,7 @@ export const MessageWrapper = styled.div`
   font-size: calc(0.8rem + 0.2vw);
   border: 1px solid #dfedec;
   background: #dfedec;
+  position: relative;
   border-radius: ${(props) =>
     props.msgbyme === "true" ? "10px 0 10px 10px" : "0 10px 10px 10px"};
   box-shadow: ${(props) =>
@@ -77,6 +78,96 @@ export const MessageWrapper = styled.div`
     font-size: calc(0.5rem + 0.1vw);
     user-select: none;
     text-align: ${(props) => (props.msgbyme === "true" ? "right" : "left")};
+  }
+`;
+
+export const MessageMenuBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: ${(props) => (props.msgbyme === "true" ? "auto" : "-42px")};
+  left: ${(props) => (props.msgbyme === "true" ? "-42px" : "auto")};
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 50%;
+    border: 1px solid #4b4b4b;
+    background-color: #939393;
+    cursor: pointer;
+
+    &:hover {
+      color: #000;
+      background-color: #6e6e6e;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+`;
+
+export const MessageMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px;
+  background: #cbcbcb;
+  border: 1px solid #dfedec;
+  border-radius: 5px;
+  position: absolute;
+  top: calc(50% + 25px);
+  transform: translateY(-50%);
+  left: ${(props) => (props.msgbyme === "true" ? "-8.5rem" : "auto")};
+  right: ${(props) => (props.msgbyme === "true" ? "auto" : "-8.5rem")};
+  z-index: 10;
+  animation: slideDown 0.15s ease-in-out forwards;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-60%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background: #f1f1f1;
+    }
   }
 `;
 

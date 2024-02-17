@@ -1,22 +1,70 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import UserContext from "../../../Context/UserContext";
 import { formateTime, handleDownload, sliceText } from "../../../Utils/common";
 import {
   Icon,
   IconContainer,
   MessageContainer,
+  MessageMenu,
   MessageWrapper,
   ProfilePic,
   ProfilePicContainer,
+  MessageMenuBtn,
 } from "../../../Styles/Components/Chats/ChatWindow/Message";
 import FullscreenView from "../FullscreenView";
-import { FaFile, FaLocationDot } from "react-icons/fa6";
+import { FaCaretDown, FaFile, FaLocationDot } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { BsFiletypePpt, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import { SiGoogledocs, SiGooglesheets } from "react-icons/si";
+import useOutSideClick from "../../../Utils/useOutsideClick";
+import { MdContentCopy } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import MyContext from "../../../Context/MyContext";
 
 export const Message = ({ message, allMessages }) => {
   const { activeConversationUser } = useContext(UserContext);
+  const { showToastMessage } = useContext(MyContext);
+  const [showMessageMenuBtn, setShowMessageMenuBtn] = useState(false);
+  const [showMessageMenu, setShowMessageMenu] = useState(false);
+  const messageWrapperRef = useRef(null);
+  const messageMenuBtnRef = useRef(null);
+  const messageMenuRef = useRef(null);
+
+  // Function to handle message options menu
+  const handleMessageOptionsMenu = (e) => {
+    e.preventDefault();
+    setShowMessageMenu(!showMessageMenu);
+  };
+
+  // Close message menu and btn on click outside hover
+  useOutSideClick(
+    messageWrapperRef,
+    () => {
+      setShowMessageMenuBtn(false);
+      setShowMessageMenu(false);
+    },
+    showMessageMenu,
+    [messageMenuBtnRef, messageMenuRef]
+  );
+
+  // Function to copy message to clipboard
+  const handleCopyMessage = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(message.message);
+    setShowMessageMenu(false);
+    setShowMessageMenuBtn(false);
+    showToastMessage("Info", "Message copied to clipboard");
+  };
+
+  // Function to delete message
+  const handleDeleteMessage = (e) => {
+    e.preventDefault();
+    console.log("Delete message");
+    setShowMessageMenu(false);
+    setShowMessageMenuBtn(false);
+  };
+
+  // Check if the message is sent by the current user
   const msgByMe =
     message.senderId !== activeConversationUser._id ? "true" : "false";
 
@@ -166,9 +214,47 @@ export const Message = ({ message, allMessages }) => {
         </ProfilePicContainer>
       )}
 
-      <MessageWrapper msgbyme={msgByMe} showprofile={showProfile().toString()}>
+      <MessageWrapper
+        msgbyme={msgByMe}
+        showprofile={showProfile().toString()}
+        ref={messageWrapperRef}
+        onMouseEnter={() => setShowMessageMenuBtn(true)}
+        onMouseLeave={() => {
+          if (!showMessageMenu) {
+            setShowMessageMenuBtn(false);
+            setShowMessageMenu(false);
+          }
+        }}
+      >
         {renderMessage()}
+
         <small>{formateTime(message.createdAt)}</small>
+
+        {showMessageMenuBtn && (
+          <MessageMenuBtn
+            msgbyme={msgByMe}
+            onClick={(e) => {
+              handleMessageOptionsMenu(e);
+            }}
+            ref={messageMenuBtnRef}
+          >
+            <span>
+              <FaCaretDown />
+            </span>
+          </MessageMenuBtn>
+        )}
+
+        {showMessageMenu && (
+          <MessageMenu msgbyme={msgByMe} ref={messageMenuRef}>
+            <span onClick={handleCopyMessage}>
+              <MdContentCopy /> Copy
+            </span>
+
+            <span onClick={handleDeleteMessage}>
+              <RiDeleteBin6Line /> Delete
+            </span>
+          </MessageMenu>
+        )}
       </MessageWrapper>
 
       {message.messageType === "image" && showFullScreen && (
