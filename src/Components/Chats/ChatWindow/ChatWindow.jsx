@@ -187,9 +187,7 @@ export const ChatWindow = () => {
 
   // Receive updateLastseen from Socket
   useEffect(() => {
-    const isUserOnline = onlineUsers.find(
-      (id) => id === activeConversationUserRef.current._id
-    );
+    const isUserOnline = onlineUsers.includes(activeConversationUser._id);
     setActiveConversationUserLastSeen(isUserOnline ? "Online" : Date.now());
   }, [onlineUsers]);
 

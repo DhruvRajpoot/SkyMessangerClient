@@ -57,7 +57,7 @@ export const Chats = () => {
     const newSocket = io(SERVER_URL);
     setSocket(newSocket);
     return () => newSocket.disconnect();
-  }, [loggedInUser]);
+  }, [loggedInUser?._id]);
 
   // Fetch all users
   useEffect(() => {
