@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Form = styled.form`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   background: #b6b6b6;
-  padding: 5px 15px;
+  padding: 8px 15px 10px 15px;
+  border-radius: 10px 10px 0 0;
   position: relative;
 `;
 
@@ -13,8 +14,8 @@ export const EmojiButton = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  border-radius: 50%;
-  padding: 1px;
+  padding: 5px;
+  border-radius: 5px;
   margin-left: 5px;
   background: #8c8c8c;
   color: #3f3f3f;
@@ -40,22 +41,27 @@ export const AttachButton = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.1rem;
-  border-radius: 50%;
-  padding: 7px;
+  padding: 8px;
   margin-left: 10px;
   color: #1c1c1c;
+  background: #8c8c8c;
+  border-radius: 5px;
   border: none;
   position: relative;
   cursor: pointer;
 `;
 
-export const TextInput = styled.input`
+export const TextInput = styled.textarea`
   width: 100%;
   padding: 10px;
   font-size: calc(0.9rem + 0.1vw);
   background: transparent;
   border: none;
-  margin-left: 10px;
+  margin-inline: 10px;
+  resize: none;
+  height: ${(props) => props.textareaheight}px;
+  max-height: 200px;
+  border: 1px solid black;
 
   &:focus {
     outline: none;
@@ -66,8 +72,8 @@ export const SendButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  padding: 10px;
+  padding: 8px;
+  border-radius: 5px;
   font-size: calc(0.9rem + 0.1vw);
   transition: all 0.2s ease-in-out;
   color: black;

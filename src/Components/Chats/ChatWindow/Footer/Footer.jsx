@@ -34,6 +34,14 @@ export const Footer = ({
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const AttachButtonRef = useRef(null);
 
+  const [textareaheight, setTextAreaHeight] = useState(40);
+  const handleSetTextAreaHeight = (e) => {
+    const { scrollHeight, clientHeight } = e.target;
+    setTextAreaHeight(
+      scrollHeight > clientHeight ? scrollHeight : clientHeight
+    );
+  };
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -189,13 +197,14 @@ export const Footer = ({
 
       {/* Input field Section */}
       <TextInput
-        type="text"
         placeholder="Type a message..."
         onChange={(e) => {
           handleIsTypingEvent();
           setMessage(e.target.value);
+          handleSetTextAreaHeight(e);
         }}
         value={message}
+        textareaheight={textareaheight}
         autoFocus
       />
 

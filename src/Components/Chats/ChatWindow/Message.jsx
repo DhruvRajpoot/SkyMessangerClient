@@ -10,6 +10,8 @@ import {
   ProfilePic,
   ProfilePicContainer,
   MessageMenuBtn,
+  Small,
+  Text,
 } from "../../../Styles/Components/Chats/ChatWindow/Message";
 import FullscreenView from "../FullscreenView";
 import { FaCaretDown, FaFile, FaLocationDot } from "react-icons/fa6";
@@ -175,7 +177,7 @@ export const Message = ({ message, allMessages }) => {
             <Icon backgroundcolor={backgroundColor} color={color}>
               {icon}
             </Icon>
-            <p>{sliceText(fileName, 45)}</p>
+            <Text>{sliceText(fileName, 45)}</Text>
           </IconContainer>
         );
 
@@ -185,12 +187,12 @@ export const Message = ({ message, allMessages }) => {
             <span>
               <FaLocationDot />
             </span>
-            <p>{renderTextWithLinks(message.message)}</p>
+            <Text>{renderTextWithLinks(message.message)}</Text>
           </IconContainer>
         );
 
       default:
-        return <p>{renderTextWithLinks(message.message)}</p>;
+        return <Text>{renderTextWithLinks(message.message)}</Text>;
     }
   };
 
@@ -228,7 +230,7 @@ export const Message = ({ message, allMessages }) => {
       >
         {renderMessage()}
 
-        <small>{formateTime(message.createdAt)}</small>
+        <Small msgbyme={msgByMe}>{formateTime(message.createdAt)}</Small>
 
         {showMessageMenuBtn && (
           <MessageMenuBtn

@@ -4,6 +4,10 @@ export const MessageContainer = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+
+  * {
+    user-select: none;
+  }
 `;
 
 export const ProfilePicContainer = styled.div`
@@ -15,10 +19,6 @@ export const ProfilePicContainer = styled.div`
   font-size: 1.2rem;
   border-radius: 50%;
   background: #97e3d7;
-
-  * {
-    user-select: none;
-  }
 `;
 
 export const ProfilePic = styled.img`
@@ -73,12 +73,18 @@ export const MessageWrapper = styled.div`
     margin-bottom: 5px;
     cursor: pointer;
   }
+`;
 
-  small {
-    font-size: calc(0.5rem + 0.1vw);
-    user-select: none;
-    text-align: ${(props) => (props.msgbyme === "true" ? "right" : "left")};
+export const Text = styled.p`
+  * {
+    user-select: text;
   }
+`;
+
+export const Small = styled.small`
+  font-size: calc(0.5rem + 0.1vw);
+  user-select: none;
+  text-align: ${(props) => (props.msgbyme === "true" ? "right" : "left")};
 `;
 
 export const MessageMenuBtn = styled.div`
